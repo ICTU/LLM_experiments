@@ -7,7 +7,7 @@ from langchain_openai import OpenAI, ChatOpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains.summarize import load_summarize_chain
 from langchain_community.document_loaders import WebBaseLoader
-from add_to_JSON import write_json
+from src.add_to_JSON import write_json
 
 #load API key from env
 load_dotenv()

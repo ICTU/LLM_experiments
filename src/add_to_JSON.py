@@ -10,7 +10,7 @@ with open('config/config.yml', 'r', encoding='utf8') as ymlfile:
 # function to add to JSON
 def write_json(new_data, filename=cfg.JSON_FILE_NAME):
     with open(filename,'r+') as file:
-          #load existing data into a dict.
+        # load existing data into a dict.
         file_data = json.load(file)
         # Join new_data with file_data inside chosen experiment
         file_data[cfg.JSON_EXPERIMENT_NAME].append(new_data)

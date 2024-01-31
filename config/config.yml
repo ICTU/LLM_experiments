@@ -1,8 +1,8 @@
 MAX_TOKENS: 128
 TEMPERATURE: 0
-DIRECTORY_PATH: "C:/Users/jeelb/OneDrive - Stichting ICTU/Documenten/Code genAI/quality-time/components/notifier/"
+DIRECTORY_PATH: "C:/Users/jeelb/OneDrive - Stichting ICTU/Documenten/Code genAI/quality-time/components/collector/"
 MODEL_NAME: "gpt-3.5-turbo-instruct"
-JSON_FILE_NAME: "example-metrics.json"
+JSON_FILE_NAME: "metrics/example-metrics.json"
 JSON_EXPERIMENT_NAME: "experiment1_summarization"
 
 
