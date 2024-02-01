@@ -2,14 +2,13 @@ import yaml
 import box
 from pathlib import Path
 from dotenv import load_dotenv
-from openai import OpenAI
 from langchain_openai import OpenAI, ChatOpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains.summarize import load_summarize_chain
-from langchain_community.document_loaders import WebBaseLoader
 from src.add_to_JSON import write_json
+#from langchain_community.document_loaders import WebBaseLoader
 
-#load API key from env
+#load API key from .env
 load_dotenv()
 
 # Import config vars
@@ -52,11 +51,19 @@ for path in pathlist:
 
     #keep track of tokens used for prompt
     num_tokens_prompt = llm.get_num_tokens(summary_prompt)
+
     print(f"This prompt, including code, contains {num_tokens_prompt} tokens")
     print("\n")
+
+    if num_tokens_prompt > cfg.CONTEXT_WINDOW: 
+        #if number of tokens exceeds context window of model, use "stuff" summarization
+        chain = load_summarize_chain(llm, chain_type="stuff")
+        summary = chain.invoke(code_str)
+
+    else:            
+        #else generate summary using prompt
+        summary = llm.invoke(summary_prompt)
     
-    #generate and print summary
-    summary = llm.invoke(summary_prompt)
     print(f"File: {path} \n Summary: \n {summary}")
     print("\n")
 
@@ -75,6 +82,7 @@ for path in pathlist:
                 "component": component
                  }
     write_json(json_item)
+
 
 
 # code for "stuff" type summarization with scraper

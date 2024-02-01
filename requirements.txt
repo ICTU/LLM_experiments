@@ -1,8 +1,6 @@
-openai
 langchain
 langchain-openai
 python-dotenv
-pathlib
-beautifulsoup4
-chromadb
+#beautifulsoup4
+#chromadb
 python-box
