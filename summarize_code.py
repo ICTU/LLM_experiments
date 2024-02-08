@@ -1,15 +1,11 @@
 from __future__ import annotations
-
 import logging
 import pprint
 import sys
 from pathlib import Path
 from typing import TypedDict
-
-from langchain_openai import OpenAI
-
-
-llm = OpenAI(model="gpt-3.5-turbo-instruct", temperature=0, max_tokens=100)
+from src.llm import llm
+from src.prompt_template import code_summary_prompt, summaries_summary_prompt, code_template, summaries_template
 
 
 class Summary(TypedDict):
@@ -17,22 +13,29 @@ class Summary(TypedDict):
 
     path: Path
     summary: str
+    prompt: str
     summaries: list[Summary]
 
 
 def summarize_file(filename: Path) -> Summary:
     """Summarize one file."""
     with filename.open() as code_file:
-        prompt = "Summarize the following source code file"
-        summary_text = llm.invoke(f"{prompt}: ```{code_file.read()[:4000]}```")  # FIXME: deal with big files smarter
-        return Summary(path=filename, summary=summary_text.strip())
+        #add code and file_name to prompt
+        prompt = code_summary_prompt(path.name, code_file.read())
+        summary_text = llm(prompt)
+        return Summary(path=filename, prompt=code_template, summary=summary_text.strip())
 
 
 def summarize_summaries(path: Path, summaries: list[Summary]) -> Summary:
-    """Summarize the summaries for path."""
-    prompt = "Summarize the following summaries of source code files"
-    summary_text = llm.invoke(f"{prompt}: ```{str(summaries)[:4000]}```")  # FIXME: deal with lots of summaries smarter
-    return Summary(path=path, summary=summary_text.strip(), summaries=summaries)
+    """"Summarize the summaries for path."""
+    prompt = summaries_summary_prompt(path.name, [summary["summary"] for summary in summaries])
+    try:
+        summary_text = llm(prompt)
+    except ValueError:
+        print(path)
+        print(summaries)
+        raise
+    return Summary(path=path, prompt=summaries_template, summary=summary_text.strip(), summaries=summaries)
 
 
 def summarize_path(path: Path) -> Summary:
@@ -48,7 +51,7 @@ def summarize_path(path: Path) -> Summary:
 
 def skip_dir(path: Path) -> bool:
     """Return whether to skip the directory."""
-    dirs_to_skip = [".*", "*.egg-info", "build", "venv", "__pycache__"]
+    dirs_to_skip = ["*.egg-info", "build", "venv", "__pycache__"]
     for dir in dirs_to_skip:
         for part in path.parts:
             if part in (".", ".."):
@@ -60,7 +63,7 @@ def skip_dir(path: Path) -> bool:
 
 def skip_file(filename: Path) -> bool:
     """Return whether to skip the file."""
-    filenames_to_skip = [".*", "__init__.py", "*.txt", "*.xml", "*.json"]
+    filenames_to_skip = ["__init__.py", "*.txt", "*.xml", "*.json"]
     for filename_to_skip in filenames_to_skip:
         if filename.match(filename_to_skip):
             return True
@@ -68,5 +71,14 @@ def skip_file(filename: Path) -> bool:
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
-    pprint.pprint(summarize_path(Path(sys.argv[1])), width=160)
+    try:
+        logging.basicConfig(level=logging.INFO)
+        path = Path(sys.argv[1]).resolve(strict=True)
+        summary = summarize_path(path)
+        pprint.pprint(summary, width=160)
+    except FileNotFoundError:
+        print(f"Path {sys.argv[1]} does not exist. Please provide valid path.")
+    except OSError:
+        print(f"Permission Denied. Please grant the necessary permissions.")
+    except Exception as e:
+        print(f"Unexpected error occurred: {e}")

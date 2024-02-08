@@ -1,0 +1,114 @@
+{
+    "experiment1_summarization": [
+        {
+            "name": "quality_time_notifier.py",
+            "path": "(C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\notifier\\src\\quality_time_notifier.py)",
+            "summary": "\nThe code is a notifier that uses asyncio to send notifications indefinitely. It sets the log level and sleep duration from environment variables and uses a database connection to send notifications. The main function starts the notifications.",
+            "prompt_template": "\"\n    Write a concise summary for the code delineated by the triple backticks. \n\n    Code: ```{code}```\n",
+            "max_tokens": 128,
+            "num_tokens_prompt": 136,
+            "num_tokens_output": 41,
+            "model": "gpt-3.5-turbo-instruct",
+            "component": "notifier"
+        },
+        {
+            "name": "measurements.py",
+            "path": "(C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\notifier\\src\\database\\measurements.py)",
+            "summary": "\nThe code is a function that retrieves recent measurements for specified metrics from a database, without including entities and issue status. It uses the PyMongo library to connect to the database and the shared model classes for Measurement and Metric. The function takes in a database, a list of metrics, and an optional limit for the number of measurements per metric. It then uses a projection to exclude certain fields from the database query and loops through the metrics to retrieve the corresponding measurements. The measurements are then converted into Measurement objects and returned as a list.",
+            "prompt_template": "\"\n    Write a concise summary for the code delineated by the triple backticks. \n\n    Code: ```{code}```\n",
+            "max_tokens": 128,
+            "num_tokens_prompt": 228,
+            "num_tokens_output": 107,
+            "model": "gpt-3.5-turbo-instruct",
+            "component": "notifier"
+        },
+        {
+            "name": "reports.py",
+            "path": "(C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\notifier\\src\\database\\reports.py)",
+            "summary": "\nThe code is a function that retrieves reports and measurements from a database. It imports necessary modules and functions, and uses type checking to ensure the correct types are used. The function returns a tuple containing a list of reports and a list of measurements.",
+            "prompt_template": "\"\n    Write a concise summary for the code delineated by the triple backticks. \n\n    Code: ```{code}```\n",
+            "max_tokens": 128,
+            "num_tokens_prompt": 177,
+            "num_tokens_output": 50,
+            "model": "gpt-3.5-turbo-instruct",
+            "component": "notifier"
+        },
+        {
+            "name": "ms_teams.py",
+            "path": "(C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\notifier\\src\\destinations\\ms_teams.py)",
+            "summary": "\nThe code is a function that sends a notification to Microsoft Teams using a webhook. It creates and formats the contents of the notification, including the report title, number of metrics that changed, and the status and values of each metric. It also includes a link to the report and attempts to send the notification, logging an error if it fails.",
+            "prompt_template": "\"\n    Write a concise summary for the code delineated by the triple backticks. \n\n    Code: ```{code}```\n",
+            "max_tokens": 128,
+            "num_tokens_prompt": 501,
+            "num_tokens_output": 69,
+            "model": "gpt-3.5-turbo-instruct",
+            "component": "notifier"
+        },
+        {
+            "name": "metric_notification_data.py",
+            "path": "(C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\notifier\\src\\models\\metric_notification_data.py)",
+            "summary": "\nThe code is used to handle metric data needed for notifications. It imports necessary modules and defines constants. It also defines a class called `MetricNotificationData` which is used to initialize the notification with metric data. The class has methods to get user-friendly status names from the data model.",
+            "prompt_template": "\"\n    Write a concise summary for the code delineated by the triple backticks. \n\n    Code: ```{code}```\n",
+            "max_tokens": 128,
+            "num_tokens_prompt": 499,
+            "num_tokens_output": 58,
+            "model": "gpt-3.5-turbo-instruct",
+            "component": "notifier"
+        },
+        {
+            "name": "notification.py",
+            "path": "(C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\notifier\\src\\models\\notification.py)",
+            "summary": "\nThe code is a class called \"Notification\" that handles the contents and status of a notification. It includes a report, report URL, metrics, and destination. It also has a property that returns the title of the report.",
+            "prompt_template": "\"\n    Write a concise summary for the code delineated by the triple backticks. \n\n    Code: ```{code}```\n",
+            "max_tokens": 128,
+            "num_tokens_prompt": 143,
+            "num_tokens_output": 46,
+            "model": "gpt-3.5-turbo-instruct",
+            "component": "notifier"
+        },
+        {
+            "name": "notifier.py",
+            "path": "(C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\notifier\\src\\notifier\\notifier.py)",
+            "summary": "\nThe code is a notifier that periodically sends notifications to users about the number of red metrics. It uses asyncio to run in the background and uses a NotificationFinder to determine which notifications to send. It also records the current date and time in a file for health checks.",
+            "prompt_template": "\"\n    Write a concise summary for the code delineated by the triple backticks. \n\n    Code: ```{code}```\n",
+            "max_tokens": 128,
+            "num_tokens_prompt": 436,
+            "num_tokens_output": 54,
+            "model": "gpt-3.5-turbo-instruct",
+            "component": "notifier"
+        },
+        {
+            "name": "type.py",
+            "path": "(C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\notifier\\src\\notifier_utilities\\type.py)",
+            "summary": "\nThis code defines a specific type for quality-time and imports the necessary modules. It also defines a JSON type using a dictionary with string keys and any values.",
+            "prompt_template": "\"\n    Write a concise summary for the code delineated by the triple backticks. \n\n    Code: ```{code}```\n",
+            "max_tokens": 128,
+            "num_tokens_prompt": 42,
+            "num_tokens_output": 32,
+            "model": "gpt-3.5-turbo-instruct",
+            "component": "notifier"
+        },
+        {
+            "name": "notification_strategy.py",
+            "path": "(C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\notifier\\src\\strategies\\notification_strategy.py)",
+            "summary": "\nThe code is a class that handles the notification of users about metrics. It imports necessary modules and classes, and has a function that returns a list of notifications based on reports, measurements, and the most recent measurement seen. It also has a function that determines if a metric has a new status after a given timestamp.",
+            "prompt_template": "\"\n    Write a concise summary for the code delineated by the triple backticks. \n\n    Code: ```{code}```\n",
+            "max_tokens": 128,
+            "num_tokens_prompt": 459,
+            "num_tokens_output": 64,
+            "model": "gpt-3.5-turbo-instruct",
+            "component": "notifier"
+        },
+        {
+            "name": "fixtures.py",
+            "path": "(C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\notifier\\tests\\fixtures.py)",
+            "summary": "\nThe code creates a fake report with a unique ID, title, and other information such as subjects, metrics, and notification destinations. It also has the option to include a \"deleted\" flag.",
+            "prompt_template": "\"\n    Write a concise summary for the code delineated by the triple backticks. \n\n    Code: ```{code}```\n",
+            "max_tokens": 128,
+            "num_tokens_prompt": 234,
+            "num_tokens_output": 40,
+            "model": "gpt-3.5-turbo-instruct",
+            "component": "notifier"
+        }
+    ]
+}
