@@ -8,6 +8,5 @@ JSON_FILE_NAME: "metrics/example_2.json"
 JSON_EXPERIMENT_NAME: "experiment1_summarization"
 CONTEXT_WINDOW: 4000
 
-#LOG_FILE: 'log_loaded.txt'
 #EMBEDDINGS_MODEL_NAME: 'sentence-transformers/all-MiniLM-L12-v2' 
 #TOKENIZER: "OPENAI"
