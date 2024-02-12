@@ -1,12 +1,13 @@
 MAX_TOKENS: 128
 TEMPERATURE: 0
-DIRECTORY_PATH: "C:/Users/jeelb/OneDrive - Stichting ICTU/Documenten/Code genAI/quality-time/components/notifier/"
+DIRECTORY_PATH: "C:/Users/jeelb/OneDrive - Stichting ICTU/Documenten/Code genAI/quality-time/components/notifier/src/notifier/notifier.py"
 MODEL_TYPE: "completion"
 MODEL_NAME: "gpt-3.5-turbo-instruct"
-Model_CHAT_NAME: "gpt-3.5-turbo-1106"
+MODEL_CHAT_NAME: "gpt-3.5-turbo-1106"
 JSON_FILE_NAME: "metrics/example_2.json"
 JSON_EXPERIMENT_NAME: "experiment1_summarization"
 CONTEXT_WINDOW: 4000
+CHUNK_SIZE: 2000
 
 #EMBEDDINGS_MODEL_NAME: 'sentence-transformers/all-MiniLM-L12-v2' 
 #TOKENIZER: "OPENAI"

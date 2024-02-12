@@ -4,8 +4,8 @@ import pprint
 import sys
 from pathlib import Path
 from typing import TypedDict
-from src.llm import llm
-from src.prompt_template import code_summary_prompt, summaries_summary_prompt, code_template, summaries_template
+from src.llm import llm_generate_summary, llm_summarize_summary
+from src.prompt_template import code_template, summaries_template
 
 
 class Summary(TypedDict):
@@ -21,16 +21,16 @@ def summarize_file(filename: Path) -> Summary:
     """Summarize one file."""
     with filename.open() as code_file:
         #add code and file_name to prompt
-        prompt = code_summary_prompt(path.name, code_file.read())
-        summary_text = llm(prompt)
+        summary_text = llm_generate_summary(path.name, code_file.read())
+        print(summary_text)
         return Summary(path=filename, prompt=code_template, summary=summary_text.strip())
 
 
 def summarize_summaries(path: Path, summaries: list[Summary]) -> Summary:
     """"Summarize the summaries for path."""
-    prompt = summaries_summary_prompt(path.name, [summary["summary"] for summary in summaries])
     try:
-        summary_text = llm(prompt)
+        summary_text = llm_summarize_summary(path.name, [summary["summary"] for summary in summaries])
+        print(summary_text)
     except ValueError:
         print(path)
         print(summaries)
