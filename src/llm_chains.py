@@ -45,5 +45,5 @@ def chain_summarize_summaries(text):
         combine_prompt= reduce_prompt, 
         verbose=False)
     summary = map_reduce_chain.invoke(chunks)
-    return summary
+    return summary["output_text"]
 
