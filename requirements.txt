@@ -1,6 +1,4 @@
 langchain
 langchain-openai
 python-dotenv
-#beautifulsoup4
-#chromadb
 python-box

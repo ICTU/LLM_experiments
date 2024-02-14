@@ -1,0 +1,200 @@
+{
+    "summaries_settings_GPT3.5-128": [
+        {
+            "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\notifier\\src\\notifier",
+            "summary": "The notifier component periodically sends notifications to users about red metrics using asyncio, pymongo, and a notification strategy. It also records the current date and time for health checks.",
+            "summaries": [
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\notifier\\src\\notifier\\notifier.py",
+                    "summary": "This code is a notifier that periodically sends notifications to users about the number of red metrics. It uses asyncio and pymongo to retrieve reports and measurements from a database, and then uses a notification strategy to determine which notifications to send. It also records the current date and time in a file for health checks."
+                }
+            ],
+            "time": "4 seconds",
+            "max_tokens": 128,
+            "model_name": "gpt-3.5-turbo-instruct",
+            "model_chat_name": "gpt-3.5-turbo-1106",
+            "prompts": {
+                "code_prompt": "\n    Write a concise summary for the code delineated by the triple backticks. \n    File name: {file_name}\n    Code: ```{code}```\n",
+                "summaries_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    Component name: {component}\n    List of Summaries: ```{summaries}```\n    \n    Based on this list of summaries, provide a consice summary of the component.",
+                "map_prompt": "\"The following is a set of summaries describing a parts of a codebase component. \nSummaries: {text}\n\nBased on the list of summaries, distil a general description of the component\nHelpful Answer:\n",
+                "reduce_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    List of Summaries: ```{text}```\n\n    Take these summaries and distill them into a final consolidated summary of the component.\n    Helpful answer:"
+            }
+        },
+        {
+            "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject",
+            "summary": "The \"subject\" component is responsible for creating and managing a sticky div element, importing necessary modules and functions, rendering a subject title and table of metrics, and providing permissions for editing the report. It also includes tests for different scenarios, a function for delayed rendering, and a function for displaying subjects based on provided reports. The component also includes a function for styling a table, a function for rendering a table with data from a subject, and a test suite for a React component called `SubjectTable`. It also includes a function for displaying a table header, a component for managing different aspects of a subject, and tests for different actions related",
+            "summaries": [
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\Subject.css",
+                    "summary": "The code creates a sticky div element with a position of \"sticky\" and a top margin of 15px, allowing it to remain in place while scrolling. The z-index property ensures that the div appears on top of other elements."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\Subject.js",
+                    "summary": "This code imports various modules and functions, defines a function to sort metrics, and a function to check if a subject is empty due to filters. It also defines a React component called `Subject` that renders a subject title, comment, and table of metrics."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\Subject.test.js",
+                    "summary": "The code is a test suite for the `Subject` component. It imports necessary dependencies and fixtures, defines a function to render the component with different props, and sets up tests to check the behavior of the component in different scenarios. The tests include checking for the subject title, hiding metrics, and sorting metrics by different attributes."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectParameters.js",
+                    "summary": "This code imports various components and functions from different files and uses them to create a grid layout for displaying and editing subject parameters. It includes a subject type, title, subtitle, and comment, and allows for setting and reloading these attributes. It also includes permissions for editing the report."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\Subjects.js",
+                    "summary": "This code imports necessary modules and components, defines a function for rendering subjects, and sets up prop types for the function. It also uses a custom hook for delayed rendering and assumes a maximum of 3 subjects visible on initial render. The function iterates through reports and their subjects, creating a Subject component for each one. The function returns the list of subjects."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\Subjects.test.js",
+                    "summary": "This code imports necessary libraries and fixtures, and defines a function to render subjects based on provided reports. It also includes two tests, one to check if the subjects are displayed and another to check if invisible subjects are not rendered."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectsButtonRow.js",
+                    "summary": "This code imports various modules and components, including React, PropTypes, and Semantic UI React wrappers. It also imports functions and options from other files. The code defines a function called `SubjectsButtonRow` that takes in `reload`, `report`, `reports`, and `settings` as parameters. Within this function, there is a call to `useContext` and a function called `stopFiltering`. The function returns a `Segment` component with various buttons, including an \"Add\" button, a \"Copy\" button, and a \"Move\" button. The `SubjectsButtonRow` function also has a `propTypes` object"
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectsButtonRow.test.js",
+                    "summary": "This code imports React and various functions and components from different files. It also imports mock data and functions from other files. It then sets up a mock for the server API and a mock for the subject options. The code also sets up a function to render a component with specific permissions and data. There are also tests for showing and adding subjects, copying and moving subjects, and making API calls."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectTable.css",
+                    "summary": "This code is used to style a table with a sticky header and different background colors for certain rows and columns. It also includes some hover effects and color changes for specific elements."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectTable.js",
+                    "summary": "This code imports various components and functions from different files and libraries, including React, PropTypes, and Semantic UI React. It also defines a function for rendering a table with data from a subject, including metrics, measurements, and other information. The table can be sorted and filtered based on user settings."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectTable.test.js",
+                    "summary": "The code is a test suite for a React component called `SubjectTable`. It imports various libraries and modules, including `React`, `@testing-library/react`, `history/browser`, and `../api/fetch_server_api`. It also defines some variables and functions, such as `metric`, `metric2`, `datamodel`, `dates`, and `renderSubjectTable()`. The code then contains a series of tests that check the functionality of the `SubjectTable` component, such as displaying metrics, showing and hiding columns, expanding and collapsing details, and performing actions like moving a metric or adding a source."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectTableFooter.js",
+                    "summary": "This code imports various modules and components, including `useContext` from \"react\", `PropTypes` from 'prop-types', `Table` from \"semantic-ui-react\", and several functions from \"../api/metric\", \"../context/DataModel\", \"../context/Permissions\", \"../widgets/Button\", and \"../metric/MetricType\". It also defines a function called `SubjectTableFooter` that takes in several props and returns a component. The component includes a table footer with buttons for adding, copying, and moving metrics, and it is only editable if the user has the required permissions. The component also has PropTypes defined for its props."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectTableFooter.test.js",
+                    "summary": "The code imports several libraries and functions, mocks an API, and tests the functionality of a table component. It checks that the component renders correctly, that buttons are clickable, and that the API is called with the correct parameters."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectTableHeader.js",
+                    "summary": "This code imports various components and functions from different files and libraries. It also defines several help messages and a function to display the status of a metric. Finally, it exports a component called \"SubjectTableHeader\" which displays a table header with sortable columns for different metrics."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectTableHeader.test.js",
+                    "summary": "This code is used to test the rendering of a table header for a subject, using React and the Semantic UI React library. It imports necessary modules and fixtures, and defines a function to render the table header with given column dates. It also includes tests to check if the correct headers are displayed and if certain columns are hidden based on the URL parameters."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectTitle.js",
+                    "summary": "This code imports various components and functions from different files and libraries, including React, PropTypes, and Semantic UI React. It also defines several functions and components, such as SubjectHeader, ButtonRow, and SubjectTitle, which are used to display information and interact with the user. These components are used to display and manage different aspects of a subject, such as its title, configuration, changelog, and sharing options. The code also uses a DataModel and Permissions context to access and modify data."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectTitle.test.js",
+                    "summary": "This code imports various libraries and modules, sets up a data model and report, and defines a function to render a subject title. It also includes several tests for different actions related to the subject title, such as changing the subject type, title, subtitle, and comment, loading the changelog, showing the share tab, moving the subject, and deleting the subject."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectType.js",
+                    "summary": "The code imports React and useContext from the React library, as well as Header from a semantic UI React wrapper, DataModel from a context, and EDIT_REPORT_PERMISSION from a permissions context. It also imports a SingleChoiceInput component from a fields folder. The code then defines a function called subjectTypes that takes in a dataModel and returns an array of options. It uses the Object.keys method to iterate through the dataModel's subjects and push each subject's name, key, and description into the options array. The code then defines a component called SubjectType that takes in a subject_type and set_value prop. It renders a SingleChoice"
+                }
+            ],
+            "time": "49 seconds",
+            "max_tokens": 128,
+            "model_name": "gpt-3.5-turbo-instruct",
+            "model_chat_name": "gpt-3.5-turbo-1106",
+            "prompts": {
+                "code_prompt": "\n    Write a concise summary for the code delineated by the triple backticks. \n    File name: {file_name}\n    Code: ```{code}```\n",
+                "summaries_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    Component name: {component}\n    List of Summaries: ```{summaries}```\n    \n    Based on this list of summaries, provide a consice summary of the component.",
+                "map_prompt": "\"The following is a set of summaries describing a parts of a codebase component. \nSummaries: {text}\n\nBased on the list of summaries, distil a general description of the component\nHelpful Answer:\n",
+                "reduce_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    List of Summaries: ```{text}```\n\n    Take these summaries and distill them into a final consolidated summary of the component.\n    Helpful answer:"
+            }
+        },
+        {
+            "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject",
+            "summary": "The `Subject` component is responsible for creating a sticky div element, importing necessary dependencies, and rendering a SubjectTitle and SubjectTable component. It also includes a test suite to check for correct rendering and sorting. The `SubjectParameters` function uses a Grid component to display subject parameters and reload the page when necessary. The `SubjectsButtonRow` component uses a Segment component to display buttons for adding, copying, and moving subjects, and has a test suite to check for correct functionality. The `SubjectTable` component renders a table with various cells and rows, and has a test suite to check for correct rendering. The `SubjectTable",
+            "summaries": [
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\Subject.css",
+                    "summary": "The code creates a sticky div element with a fixed position and a top margin of 15px, allowing it to remain visible while scrolling. The z-index property ensures that the div appears on top of other elements."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\Subject.js",
+                    "summary": "This code imports React and PropTypes, as well as several other functions and components. It also defines a function for sorting metrics, and a function for determining whether a subject is empty due to filters. Finally, it exports a Subject component that takes in various props and renders a SubjectTitle component and a SubjectTable component."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\Subject.test.js",
+                    "summary": "The code is a test suite for the `Subject` component. It imports necessary dependencies and fixtures, and defines a function `renderSubject` to render the component with different props. It also defines a `beforeEach` hook to reset the browser history before each test. The tests check that the component renders correctly with different props and that it sorts metrics correctly based on different attributes and directions."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectParameters.js",
+                    "summary": "The code imports React and several components from the semantic-ui-react library. It also imports a function from the '../api/subject' file and a constant from the '../context/Permissions' file. The code then defines a function called SubjectParameters that takes in several props. Inside the function, a Grid component is used to display the subject parameters, including the subject type, title, subtitle, and comment. The function also uses the imported function to set the subject attributes and reload the page when necessary."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\Subjects.js",
+                    "summary": "This code imports React and PropTypes, as well as several custom PropTypes. It also imports a custom hook called useDelayedRender and a component called Subject. The Subjects component takes in several props and renders a list of Subject components based on the reportsToShow prop. The number of visible subjects is limited to 3 on initial render. The Subjects component also has PropTypes defined for its props."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\Subjects.test.js",
+                    "summary": "The code is importing React, render and screen from the testing library, history from the browser, DataModel and Subjects from the context, and createTestableSettings, datamodel, and report from the fixtures. It also defines a function called renderSubjects that takes in a reports parameter and returns a render of the Subjects component with various props. The code also includes two tests, one that checks if the Subjects component shows the subjects and another that checks if it does not render invisible subjects."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectsButtonRow.js",
+                    "summary": "This code imports various modules and components, including React, PropTypes, and Semantic UI React Wrappers. It also imports functions and options from other files. The code defines a function called `SubjectsButtonRow` that takes in `reload`, `report`, `reports`, and `settings` as parameters. Within this function, it uses the `useContext` hook to access data from the `DataModel` context. It also defines a function called `stopFiltering` and returns a `Segment` component with various buttons, including an add button, copy button, and move button. The `SubjectsButtonRow` function is then exported"
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectsButtonRow.test.js",
+                    "summary": "The code is a test suite for the `SubjectsButtonRow` component. It imports necessary dependencies and mocks some modules and functions. It also defines a helper function for rendering the component with different permissions. The tests check that the component renders correctly and that certain actions (such as adding, copying, and moving a subject) trigger the expected API calls."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectTable.css",
+                    "summary": "This code is used to style a table with a sticky header and different background colors for specific rows and columns. It also includes some hover effects and color changes for certain elements."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectTable.js",
+                    "summary": "This code imports various components and functions from different files and libraries. It also defines a function called `MeasurementCells` and a function called `expandOrCollapseItem`. The main function, `SubjectTable`, takes in various props and renders a table with different cells and rows, using the imported components and functions. It also defines a `propTypes` object to specify the expected types for each prop."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectTable.test.js",
+                    "summary": "The code is a test suite for a React component called `SubjectTable`. It imports various libraries and modules, including `React`, `@testing-library/react`, `history/browser`, `../context/DataModel`, `../context/Permissions`, `../app_ui_settings`, `../api/fetch_server_api`, and `../__fixtures__/fixtures`. It also defines two mock metrics, `metric` and `metric2`, and a mock data model, `datamodel`. The `renderSubjectTable` function is defined, which takes in optional parameters `dates` and `expandedItems` and renders the `SubjectTable` component with"
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectTableFooter.js",
+                    "summary": "This code imports various modules and components, including React, PropTypes, and Semantic UI React. It also imports functions from other files, such as `add_metric` and `copy_metric`. The code also uses a `DataModel` context and a `Permissions` context to determine whether the user has permission to edit a report. The `SubjectTableFooter` function takes in several props, including `subject`, `subjectUuid`, `reload`, `reports`, and `stopFilteringAndSorting`. It renders a table footer with buttons for adding, copying, and moving metrics, depending on the user's permissions. The `SubjectTableFooter"
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectTableFooter.test.js",
+                    "summary": "The code imports several libraries and components, mocks an API, and tests the functionality of a table footer component. It tests the ability to add, copy, and move metrics in the table."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectTableHeader.js",
+                    "summary": "This code imports several components and functions from different files and libraries. It also defines several variables and functions that are used to display information about metrics. The `SubjectTableHeader` function takes in several props and returns a table header with sortable columns for different metrics. The table header includes columns for the metric name, trend, status, measurement, target, unit, sources, time left, overrun, comment, issues, and tags. Each column has a corresponding help section that provides information about the data displayed in that column. The `SubjectTableHeader` function also uses the `DarkMode` context to determine the color of the status icons"
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectTableHeader.test.js",
+                    "summary": "The code is a test file for the `SubjectTableHeader` component. It imports necessary libraries and fixtures, and defines a function to render the component with given props. It also includes three tests to check the rendering of the component with different props and hidden columns. The tests use the `render` and `screen` functions from the testing library to check for specific elements and their presence or absence in the rendered component."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectTitle.js",
+                    "summary": "This code imports various components and functions from different files and libraries. It also defines a few custom components and functions. The `SubjectTitle` component renders a header with details for a specific subject, including its name, type, and subtitle. It also includes a tab menu with options for configuring the subject, viewing its changelog, and sharing it. The `ButtonRow` component renders buttons for reordering and deleting the subject. The `SubjectHeader` component displays the name and description of the subject type, with a link to the documentation. The code also includes some PropTypes for type checking."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectTitle.test.js",
+                    "summary": "The code is a test suite for the `SubjectTitle` component. It imports various libraries and modules, including React, testing utilities, and a data model. It also defines a `datamodel` and `report` object, and a function to render the `SubjectTitle` component with different settings. The tests cover various functionalities of the component, such as changing the subject type, title, subtitle, and comment, loading the changelog, showing the share tab, moving and deleting the subject. The tests use mock functions to simulate API calls and user interactions."
+                },
+                {
+                    "path_str": "C:\\Users\\jeelb\\OneDrive - Stichting ICTU\\Documenten\\Code genAI\\quality-time\\components\\frontend\\src\\subject\\SubjectType.js",
+                    "summary": "The code imports React and useContext from the React library, Header from the semantic_ui_react_wrappers library, DataModel from the context library, and EDIT_REPORT_PERMISSION from the Permissions library. It also imports SingleChoiceInput from the fields library. \n\nThe function subjectTypes takes in a dataModel and creates an array of options by iterating through the keys of the dataModel's subjects and pushing objects with key, text, value, and content properties to the options array. The content property is a Header component with the name and description of the subject type.\n\nThe SubjectType function takes in a subject_type and set_value and returns a Single"
+                }
+            ],
+            "time": "54 seconds",
+            "max_tokens": 128,
+            "model_name": "gpt-3.5-turbo-instruct",
+            "model_chat_name": "gpt-3.5-turbo-1106",
+            "prompts": {
+                "code_prompt": "\n    Write a concise summary for the code delineated by the triple backticks. Don't inlcude generalities, focus on specifics. \n    File name: {file_name}\n    Code: ```{code}```\n",
+                "summaries_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    Component name: {component}\n    List of Summaries: ```{summaries}```\n    \n    Based on this list of summaries, provide a consice summary of the component. Don't inlcude generalities, focus on specifics.",
+                "map_prompt": "\"The following is a set of summaries describing a parts of a codebase component. \nSummaries: {text}\n\nBased on the list of summaries, distil a general description of the component\nHelpful Answer:\n",
+                "reduce_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    List of Summaries: ```{text}```\n\n    Take these summaries and distill them into a final consolidated summary of the component.\n    Helpful answer:"
+            }
+        }
+    ]
+}

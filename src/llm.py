@@ -2,9 +2,8 @@ import yaml
 import box
 from dotenv import load_dotenv
 from langchain_openai import OpenAI, ChatOpenAI
-from langchain.chains.summarize import load_summarize_chain
 from src.llm_chains import chain_summarize_summaries
-from src.prompt_template import code_summary_prompt, summaries_summary_prompt
+from src.prompt_templates import code_summary_prompt, summaries_summary_prompt
 
 #load API key from .env
 load_dotenv()

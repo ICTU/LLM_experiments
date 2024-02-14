@@ -2,6 +2,7 @@
 import json
 import box
 import yaml
+from pathlib import Path
 
 # Import config vars
 with open('config/config.yml', 'r', encoding='utf8') as ymlfile:
@@ -13,6 +14,8 @@ def write_json(new_data, filename=cfg.JSON_FILE_NAME):
         # load existing data into a dict.
         file_data = json.load(file)
         # Join new_data with file_data inside chosen experiment
+        new_data.pop('path', None)
+             
         file_data[cfg.JSON_EXPERIMENT_NAME].append(new_data)
         # Sets file's current position at offset.
         file.seek(0)
