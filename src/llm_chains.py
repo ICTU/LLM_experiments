@@ -21,11 +21,10 @@ def chain_summarize_summaries(text):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=cfg.CHUNK_SIZE, chunk_overlap=0)
     chunks = text_splitter.create_documents([text])
     map_reduce_chain = load_summarize_chain(
-        llm=llm, 
-        chain_type="map_reduce", 
-        map_prompt= map_prompt, 
-        combine_prompt= reduce_prompt, 
+        llm=llm,
+        chain_type="map_reduce",
+        map_prompt= map_prompt,
+        combine_prompt= reduce_prompt,
         verbose=False)
     summary = map_reduce_chain.invoke(chunks)
     return summary["output_text"]
-

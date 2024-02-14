@@ -2,6 +2,7 @@ import yaml
 import box
 from dotenv import load_dotenv
 from langchain_openai import OpenAI, ChatOpenAI
+
 from src.llm_chains import chain_summarize_summaries
 from src.prompt_templates import code_summary_prompt, summaries_summary_prompt
 
@@ -12,47 +13,41 @@ load_dotenv()
 with open('config/config.yml', 'r', encoding='utf8') as ymlfile:
     cfg = box.Box(yaml.safe_load(ymlfile))
 
-#get the number of tokens in prompt or output
-def get_num_tokens(input):
-    llm = OpenAI(model=cfg.MODEL_NAME)
-    num_tokens = llm.get_num_tokens(text=input)
-    return num_tokens
 
-
-def llm_generate_summary(file_name, code):
-    """Function for text completion LLM, takes a filename(str) and code(str) as input."""
-    if cfg.MODEL_TYPE == "completion":
-        llm = OpenAI(model=cfg.MODEL_NAME, temperature=cfg.TEMPERATURE, max_tokens=cfg.MAX_TOKENS)
-    else:
-        llm = ChatOpenAI(model=cfg.MODEL_CHAT_NAME, temperature=cfg.TEMPERATURE, max_tokens=cfg.MAX_TOKENS)
-
-    #fill in prompt
+def llm_generate_summary(file_name: str, code: str) -> str:
+    """Generate a summary of the code, using an LLM."""
+    llm = create_llm()
     prompt = code_summary_prompt(file_name, code)
-    
-    #access map reduce chain if prompt is too big
-    if (nr_tokens := get_num_tokens(prompt)) > llm.max_context_size:
-        output = chain_summarize_summaries(code)
-        #raise ValueError(f"Number of tokens in prompt ({nr_tokens}) exceeds token limit ({llm.max_context_size})") 
-    
+    if is_prompt_too_big(llm, prompt):
+        output = chain_summarize_summaries(code)  # FIXME: What is the prompt used here?
     else:
         output = llm.invoke(prompt)
-    return output
+    return output.strip()
 
-def llm_summarize_summary(component, summaries):
-    """Function for summarizing summaries with an LLM, takes component name (str) and summaries (list) as input"""
-    if cfg.MODEL_TYPE == "completion":
-        llm = OpenAI(model=cfg.MODEL_NAME, temperature=cfg.TEMPERATURE, max_tokens=cfg.MAX_TOKENS)
-    else:
-        llm = ChatOpenAI(model=cfg.MODEL_CHAT_NAME, temperature=cfg.TEMPERATURE, max_tokens=cfg.MAX_TOKENS)    
 
-    #fill in prompt
+def llm_summarize_summary(component: str, summaries: list[str]) -> str:
+    """Generate a summary of summaries, using an LLM."""
+    llm = create_llm()
     prompt = summaries_summary_prompt(component, summaries)
-
-    #access map reduce chain if prompt is too big
-    if (nr_tokens := get_num_tokens(prompt)) > llm.max_context_size:
-        output = chain_summarize_summaries(summaries)
+    if is_prompt_too_big(llm, prompt):
+        output = chain_summarize_summaries(summaries)  # FIXME: What is the prompt used here?
     else:
         output = llm.invoke(prompt)
-    return output
+    return output.strip()
 
 
+def create_llm() -> OpenAI | ChatOpenAI:
+    """Create an LLM client to use based on the configuration."""
+    llm_class = OpenAI if cfg.MODEL_TYPE == "completion" else ChatOpenAI
+    return llm_class(model=cfg.MODEL_NAME, temperature=cfg.TEMPERATURE, max_tokens=cfg.MAX_TOKENS)
+
+
+def is_prompt_too_big(llm, prompt: str) -> bool:
+    """Return whether the prompt has more tokens than fit into the context."""
+    return get_num_tokens(prompt) > llm.max_context_size
+
+
+def get_num_tokens(input: str) -> int:
+    """Return the number of tokens in prompt or output."""
+    llm = OpenAI(model=cfg.MODEL_NAME)  # FIXME: Add comment explaining why we always use OpenAI to count tokens
+    return llm.get_num_tokens(text=input)
