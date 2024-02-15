@@ -20,8 +20,7 @@ with open('config/config.yml', 'r', encoding='utf8') as ymlfile:
 class Summary(TypedDict):
     """A summary of a code file, component, application, or complete system."""
 
-    path: Path
-    path_str: str ###added because unable to save raw path to json file
+    path: str
     summary: str
     summaries: list[Summary]
     prompts: dict
@@ -31,46 +30,57 @@ class Summary(TypedDict):
     model_chat_name: str
 
 
+def summarize_files(path: Path, hash_register: HashRegister) -> Summary:
+    """Summarize the files in a folder."""
+    files = [subpath for subpath in path.iterdir() if subpath.is_file() and not skip_file(subpath)]
+    if len(files) == 1:
+        return summarize_file(files[0], hash_register)
+    summaries = [summarize_file(filename, hash_register) for filename in files]
+    return summarize_summaries(path, summaries, hash_register, files_only=True)
+
+
 def summarize_file(filename: Path, hash_register: HashRegister) -> Summary:
     """Summarize one file."""
     with filename.open(encoding="utf-8") as code_file:
         contents = code_file.read()
-        if hash_register.is_changed(str(filename), contents):
-            summary_text = llm_generate_summary(path.name, contents)
-            hash_register.set(str(filename), contents, summary_text)
-        else:
-            summary_text = hash_register.get(str(filename))
-        print(summary_text)
-        return Summary(path_str=str(filename), summary=summary_text)
+    if hash_register.is_changed(str(filename), contents):
+        summary_text = llm_generate_summary(path.name, contents)
+        hash_register.set(str(filename), contents, summary_text)
+    else:
+        summary_text = hash_register.get(str(filename))
+    print(summary_text)
+    return Summary(path=str(filename), summary=summary_text)
 
 
-def summarize_summaries(path: Path, summaries: list[Summary], hash_register: HashRegister) -> Summary:
+def summarize_summaries(
+    path: Path,
+    summaries: list[Summary],
+    hash_register: HashRegister,
+    files_only: bool = False
+) -> Summary:
     """"Summarize the summaries for path."""
+    key = f"files@{path}" if files_only else str(path)
     try:
         summary_texts = [summary["summary"] for summary in summaries]
-        if hash_register.is_changed(str(path), str(summary_texts)):
+        if hash_register.is_changed(key, str(summary_texts)):
             summary_text = llm_summarize_summary(path.name, summary_texts)
-            hash_register.set(str(path), str(summary_texts), summary_text)
+            hash_register.set(key, str(summary_texts), summary_text)
         else:
-            summary_text = hash_register.get(str(path))
+            summary_text = hash_register.get(key)
         print(summary_text)
     except ValueError:
         print(path)
         print(summaries)
         raise
-    return Summary(path=path, path_str=str(path), summary=summary_text, summaries=summaries)
+    return Summary(path=str(path), summary=summary_text, summaries=summaries)
 
 
 def summarize_path(path: Path, hash_register: HashRegister) -> Summary:
     """Summarize all code in the path, recursively."""
-    summaries = []
-    for subpath in path.iterdir():
-        if (subpath.is_dir() and skip_dir(subpath)) or skip_file(subpath):
-            continue
-        logging.info("Summarizing %s", subpath)
-        summary_dict = summarize_path(subpath, hash_register) if subpath.is_dir() else summarize_file(subpath, hash_register)
-        summary_dict.pop('path', None) ### remove path to be able to save as json
-        summaries.append(summary_dict)
+    logging.info("Summarizing %s", path)
+    dirs = [subpath for subpath in path.iterdir() if subpath.is_dir() and not skip_dir(subpath)]
+    summaries = [summarize_path(subpath, hash_register) for subpath in dirs]
+    summaries.append(summarize_files(path, hash_register))
     return summarize_summaries(path, summaries, hash_register)
 
 
