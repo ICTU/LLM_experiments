@@ -76,7 +76,7 @@ def summarize_path(path: Path, hash_register: HashRegister) -> Summary:
 
 def skip_dir(path: Path) -> bool:
     """Return whether to skip the directory."""
-    dirs_to_skip = [".*", "*.egg-info", "build", "venv", "__pycache__"]
+    dirs_to_skip = [".*", "*.egg-info", "build", "venv", "__pycache__", "testdata"]
     for dir in dirs_to_skip:
         for part in path.parts:
             if part in (".", ".."):
@@ -88,7 +88,7 @@ def skip_dir(path: Path) -> bool:
 
 def skip_file(filename: Path) -> bool:
     """Return whether to skip the file."""
-    filenames_to_skip = [".*", "__init__.py", "*.txt", "*.xml", "*.json", "*.png", "*.ico", "*.gif"]
+    filenames_to_skip = [".*", "__init__.py", "*.txt", "*.xml", "*.json", "*.png", "*.ico", "*.gif", "*.zip"]
     for filename_to_skip in filenames_to_skip:
         if filename.match(filename_to_skip):
             return True
