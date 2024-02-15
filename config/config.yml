@@ -1,4 +1,5 @@
 MAX_TOKENS: 128
+MAX_TOKENS_CHAIN: 512
 TEMPERATURE: 0
 DIRECTORY_PATH: "C:/Users/jeelb/OneDrive - Stichting ICTU/Documenten/Code genAI/quality-time/components/notifier/src/notifier/notifier.py"
 MODEL_TYPE: "completion"
