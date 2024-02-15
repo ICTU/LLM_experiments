@@ -27,12 +27,13 @@ class Summary(TypedDict):
     model_name: str
     model_chat_name: str
 
+
 def summarize_file(filename: Path) -> Summary:
     """Summarize one file."""
     with filename.open(encoding="utf-8") as code_file:
         summary_text = llm_generate_summary(path.name, code_file.read())
         print(summary_text)
-        return Summary(path_str=str(filename), summary=summary_text.strip()) 
+        return Summary(path_str=str(filename), summary=summary_text.strip())
 
 
 def summarize_summaries(path: Path, summaries: list[Summary]) -> Summary:
@@ -54,7 +55,7 @@ def summarize_path(path: Path) -> Summary:
         if (subpath.is_dir() and skip_dir(subpath)) or skip_file(subpath):
             continue
         logging.info("Summarizing %s", subpath)
-        summary_dict = summarize_path(subpath) if subpath.is_dir() else summarize_file(subpath) 
+        summary_dict = summarize_path(subpath) if subpath.is_dir() else summarize_file(subpath)
         summary_dict.pop('path', None) ### remove path to be able to save as json
         summaries.append(summary_dict)
     return summarize_summaries(path, summaries)
@@ -74,11 +75,12 @@ def skip_dir(path: Path) -> bool:
 
 def skip_file(filename: Path) -> bool:
     """Return whether to skip the file."""
-    filenames_to_skip = [".*", "__init__.py", "*.txt", "*.xml", "*.json", "*.png", "*.ico", ".gif"]
+    filenames_to_skip = [".*", "__init__.py", "*.txt", "*.xml", "*.json", "*.png", "*.ico", "*.gif"]
     for filename_to_skip in filenames_to_skip:
         if filename.match(filename_to_skip):
             return True
     return False
+
 
 def add_info_to_dict(summary, time):
     """Add configuration settings info to dictionary"""
@@ -93,6 +95,7 @@ def add_info_to_dict(summary, time):
         'reduce_prompt':reduce_template
         }
     return summary
+
 
 if __name__ == "__main__":
     try:
