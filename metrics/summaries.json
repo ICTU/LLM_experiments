@@ -1,4 +1,364 @@
 {
     "summaries_settings_GPT3.5-128": [
+        {
+            "path_str": "/Users/fniessink/Developer/LLM_experiments/src",
+            "summary": "The `src` component is a collection of Python scripts and functions that import libraries and config variables, define functions for adding and summarizing data, and use language models to generate prompts and summaries. It also includes a class for tracking and preventing unnecessary updates using hashing algorithms.",
+            "summaries": [
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/add_to_JSON.py",
+                    "summary": "This code is a Python script that updates a JSON file by importing necessary libraries and config variables, defining a function to add data to the JSON file, and using the function to update the file with new data. It also removes a specific key from the new data before adding it to the file."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/prompt_templates.py",
+                    "summary": "This code contains two functions, `code_summary_prompt` and `summaries_summary_prompt`, which generate prompts for summarizing code and codebase components, respectively. The `code_summary_prompt` function takes in a file name and code as input and uses a template to generate a prompt for summarizing the code. Similarly, the `summaries_summary_prompt` function takes in a component name and a list of summaries as input and uses a template to generate a prompt for summarizing the component. The code also includes templates for chaining prompts, which can be used to generate prompts for summarizing multiple parts of a codebase component and then consolid"
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/llm.py",
+                    "summary": "The code imports necessary libraries and modules, loads an API key from a .env file, and defines functions for generating and summarizing text using a language model (LLM). The functions take input in the form of a filename and code or a component name and list of summaries, and use a prompt template to generate a prompt for the LLM. If the prompt is too large, a map reduce chain is used to summarize the input. The LLM used can be either a completion or chat model, and the temperature and maximum number of tokens can be specified in a config file."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/llm_chains.py",
+                    "summary": "The code imports various libraries and modules, including `yaml`, `box`, `dotenv`, and `langchain_openai`. It also defines a function called `chain_summarize_summaries` that uses a language model to create summaries of input text. The function uses a text splitter to divide the input into smaller chunks and then uses a map-reduce chain to generate the final summary. The API key is loaded from a `.env` file and configuration variables are imported from a `config.yml` file."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/hash_register.py",
+                    "summary": "The code is a class called `HashRegister` that keeps track of the hashes of key-value pairs to prevent unnecessary updates. It uses the `md5` hashing algorithm and can load and save the hashes from a file using the `load_hashes` and `save_hashes` functions. The `add` method adds a new key-value pair to the register, while the `is_changed` method checks if the hash for a given key-value pair has changed."
+                }
+            ],
+            "time": "60 seconds",
+            "max_tokens": 128,
+            "model_name": "gpt-3.5-turbo-instruct",
+            "model_chat_name": "gpt-3.5-turbo-1106",
+            "prompts": {
+                "code_prompt": "\n    Write a concise summary for the code delineated by the triple backticks. Don't inlcude generalities, focus on specifics. \n    File name: {file_name}\n    Code: ```{code}```\n",
+                "summaries_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    Component name: {component}\n    List of Summaries: ```{summaries}```\n    \n    Based on this list of summaries, provide a consice summary of the component. Don't inlcude generalities, focus on specifics.",
+                "map_prompt": "\"The following is a set of summaries describing a parts of a codebase component. \nSummaries: {text}\n\nBased on the list of summaries, distil a general description of the component\nHelpful Answer:\n",
+                "reduce_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    List of Summaries: ```{text}```\n\n    Take these summaries and distill them into a final consolidated summary of the component.\n    Helpful answer:"
+            }
+        },
+        {
+            "path_str": "/Users/fniessink/Developer/LLM_experiments/src",
+            "summary": "The `src` component is a collection of Python scripts and functions that import libraries and config variables, define functions for summarizing code and codebase components, and use language models to generate prompts and summaries. It also includes a class for tracking file and summary hashes to prevent unnecessary updates.",
+            "summaries": [
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/add_to_JSON.py",
+                    "summary": "This code is a Python script that updates a JSON file by importing necessary libraries and config variables, defining a function to add data to the JSON file, and using the function to update the file with new data. It also removes a specific key from the new data before adding it to the file."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/prompt_templates.py",
+                    "summary": "This code contains two functions, `code_summary_prompt` and `summaries_summary_prompt`, which generate prompts for summarizing code and codebase components, respectively. The `code_summary_prompt` function takes in a file name and code as input and uses a template to generate a prompt for summarizing the code. Similarly, the `summaries_summary_prompt` function takes in a component name and a list of summaries as input and uses a template to generate a prompt for summarizing the component. The code also includes templates for chaining prompts, which can be used to generate prompts for summarizing multiple parts of a codebase component and then consolid"
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/llm.py",
+                    "summary": "The code imports necessary libraries and modules, loads an API key from a .env file, and defines functions for generating and summarizing text using a language model (LLM). The functions take input in the form of a filename and code or a component name and list of summaries, and use a prompt template to generate a prompt for the LLM. If the prompt is too large, a map reduce chain is used to summarize the input. The LLM used can be either a completion or chat model, and the temperature and maximum number of tokens can be specified in a config file."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/llm_chains.py",
+                    "summary": "The code imports various libraries and modules, including `yaml`, `box`, `dotenv`, and `langchain_openai`. It also defines a function called `chain_summarize_summaries` that uses a language model to create summaries of input text. The function uses a text splitter to divide the input into smaller chunks and then uses a map-reduce chain to generate the final summary. The API key is loaded from a `.env` file and configuration variables are imported from a `config.yml` file."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/hash_register.py",
+                    "summary": "The code is a class that keeps track of the hash of files and summaries to prevent needless updates. It uses the hashlib library to create a hash for the input and stores it in a dictionary along with the output. It also has methods to check if the hash has changed and to load and save the hashes from a file."
+                }
+            ],
+            "time": "19 seconds",
+            "max_tokens": 128,
+            "model_name": "gpt-3.5-turbo-instruct",
+            "model_chat_name": "gpt-3.5-turbo-1106",
+            "prompts": {
+                "code_prompt": "\n    Write a concise summary for the code delineated by the triple backticks. Don't inlcude generalities, focus on specifics. \n    File name: {file_name}\n    Code: ```{code}```\n",
+                "summaries_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    Component name: {component}\n    List of Summaries: ```{summaries}```\n    \n    Based on this list of summaries, provide a consice summary of the component. Don't inlcude generalities, focus on specifics.",
+                "map_prompt": "\"The following is a set of summaries describing a parts of a codebase component. \nSummaries: {text}\n\nBased on the list of summaries, distil a general description of the component\nHelpful Answer:\n",
+                "reduce_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    List of Summaries: ```{text}```\n\n    Take these summaries and distill them into a final consolidated summary of the component.\n    Helpful answer:"
+            }
+        },
+        {
+            "path_str": "/Users/fniessink/Developer/LLM_experiments/src",
+            "summary": "The `src` component is a collection of Python scripts and functions that import libraries and config variables, define functions for summarizing code and codebase components, and use language models to generate prompts and summaries. It also includes a class for tracking file and summary hashes to prevent unnecessary updates.",
+            "summaries": [
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/add_to_JSON.py",
+                    "summary": "This code is a Python script that updates a JSON file by importing necessary libraries and config variables, defining a function to add data to the JSON file, and using the function to update the file with new data. It also removes a specific key from the new data before adding it to the file."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/prompt_templates.py",
+                    "summary": "This code contains two functions, `code_summary_prompt` and `summaries_summary_prompt`, which generate prompts for summarizing code and codebase components, respectively. The `code_summary_prompt` function takes in a file name and code as input and uses a template to generate a prompt for summarizing the code. Similarly, the `summaries_summary_prompt` function takes in a component name and a list of summaries as input and uses a template to generate a prompt for summarizing the component. The code also includes templates for chaining prompts, which can be used to generate prompts for summarizing multiple parts of a codebase component and then consolid"
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/llm.py",
+                    "summary": "The code imports necessary libraries and modules, loads an API key from a .env file, and defines functions for generating and summarizing text using a language model (LLM). The functions take input in the form of a filename and code or a component name and list of summaries, and use a prompt template to generate a prompt for the LLM. If the prompt is too large, a map reduce chain is used to summarize the input. The LLM used can be either a completion or chat model, and the temperature and maximum number of tokens can be specified in a config file."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/llm_chains.py",
+                    "summary": "The code imports various libraries and modules, including `yaml`, `box`, `dotenv`, and `langchain_openai`. It also defines a function called `chain_summarize_summaries` that uses a language model to create summaries of input text. The function uses a text splitter to divide the input into smaller chunks and then uses a map-reduce chain to generate the final summary. The API key is loaded from a `.env` file and configuration variables are imported from a `config.yml` file."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/hash_register.py",
+                    "summary": "The code is a class that keeps track of the hash of files and summaries to prevent needless updates. It uses the hashlib library to create a hash for the input and stores it in a dictionary along with the output. It also has methods to check if the hash has changed and to load and save the hashes from a file."
+                }
+            ],
+            "time": "19 seconds",
+            "max_tokens": 128,
+            "model_name": "gpt-3.5-turbo-instruct",
+            "model_chat_name": "gpt-3.5-turbo-1106",
+            "prompts": {
+                "code_prompt": "\n    Write a concise summary for the code delineated by the triple backticks. Don't inlcude generalities, focus on specifics. \n    File name: {file_name}\n    Code: ```{code}```\n",
+                "summaries_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    Component name: {component}\n    List of Summaries: ```{summaries}```\n    \n    Based on this list of summaries, provide a consice summary of the component. Don't inlcude generalities, focus on specifics.",
+                "map_prompt": "\"The following is a set of summaries describing a parts of a codebase component. \nSummaries: {text}\n\nBased on the list of summaries, distil a general description of the component\nHelpful Answer:\n",
+                "reduce_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    List of Summaries: ```{text}```\n\n    Take these summaries and distill them into a final consolidated summary of the component.\n    Helpful answer:"
+            }
+        },
+        {
+            "path_str": "/Users/fniessink/Developer/LLM_experiments/src",
+            "summary": "The `src` component is a collection of Python scripts and functions that import libraries and config variables, define functions for summarizing code and codebase components, and use language models to generate prompts and summaries. It also includes a class for tracking file and summary hashes to prevent unnecessary updates.",
+            "summaries": [
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/add_to_JSON.py",
+                    "summary": "This code is a Python script that updates a JSON file by importing necessary libraries and config variables, defining a function to add data to the JSON file, and using the function to update the file with new data. It also removes a specific key from the new data before adding it to the file."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/prompt_templates.py",
+                    "summary": "This code contains two functions, `code_summary_prompt` and `summaries_summary_prompt`, which generate prompts for summarizing code and codebase components, respectively. The `code_summary_prompt` function takes in a file name and code as input and uses a template to generate a prompt for summarizing the code. Similarly, the `summaries_summary_prompt` function takes in a component name and a list of summaries as input and uses a template to generate a prompt for summarizing the component. The code also includes templates for chaining prompts, which can be used to generate prompts for summarizing multiple parts of a codebase component and then consolid"
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/llm.py",
+                    "summary": "The code imports necessary libraries and modules, loads an API key from a .env file, and defines functions for generating and summarizing text using a language model (LLM). The functions take input in the form of a filename and code or a component name and list of summaries, and use a prompt template to generate a prompt for the LLM. If the prompt is too large, a map reduce chain is used to summarize the input. The LLM used can be either a completion or chat model, and the temperature and maximum number of tokens can be specified in a config file."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/llm_chains.py",
+                    "summary": "The code imports various libraries and modules, including `yaml`, `box`, `dotenv`, and `langchain_openai`. It also defines a function called `chain_summarize_summaries` that uses a language model to create summaries of input text. The function uses a text splitter to divide the input into smaller chunks and then uses a map-reduce chain to generate the final summary. The API key is loaded from a `.env` file and configuration variables are imported from a `config.yml` file."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/hash_register.py",
+                    "summary": "The code is a class that keeps track of the hash of files and summaries to prevent needless updates. It uses the hashlib library to create a hash for the input and stores it in a dictionary along with the output. It also has methods to check if the hash has changed and to load and save the hashes from a file."
+                }
+            ],
+            "time": "2 seconds",
+            "max_tokens": 128,
+            "model_name": "gpt-3.5-turbo-instruct",
+            "model_chat_name": "gpt-3.5-turbo-1106",
+            "prompts": {
+                "code_prompt": "\n    Write a concise summary for the code delineated by the triple backticks. Don't inlcude generalities, focus on specifics. \n    File name: {file_name}\n    Code: ```{code}```\n",
+                "summaries_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    Component name: {component}\n    List of Summaries: ```{summaries}```\n    \n    Based on this list of summaries, provide a consice summary of the component. Don't inlcude generalities, focus on specifics.",
+                "map_prompt": "\"The following is a set of summaries describing a parts of a codebase component. \nSummaries: {text}\n\nBased on the list of summaries, distil a general description of the component\nHelpful Answer:\n",
+                "reduce_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    List of Summaries: ```{text}```\n\n    Take these summaries and distill them into a final consolidated summary of the component.\n    Helpful answer:"
+            }
+        },
+        {
+            "path_str": "/Users/fniessink/Developer/LLM_experiments/src",
+            "summary": "The `src` component is a collection of Python scripts and classes that import necessary libraries and modules, load API keys and configuration variables, and use language models to generate summaries of code and codebase components. It also includes functions for managing input-output pairs and storing hashes in a dictionary.",
+            "summaries": [
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/add_to_JSON.py",
+                    "summary": "This code is a Python script that updates a JSON file by importing necessary libraries and config variables, defining a function to add data to the JSON file, and using the function to update the file with new data. It also removes a specific key from the new data before adding it to the file."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/prompt_templates.py",
+                    "summary": "This code contains two functions, `code_summary_prompt` and `summaries_summary_prompt`, which generate prompts for summarizing code and codebase components, respectively. The `code_summary_prompt` function takes in a file name and code as input and uses a template to generate a prompt for summarizing the code. Similarly, the `summaries_summary_prompt` function takes in a component name and a list of summaries as input and uses a template to generate a prompt for summarizing the component. The code also includes templates for chaining prompts, which can be used to generate prompts for summarizing multiple parts of a codebase component and then consolid"
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/llm.py",
+                    "summary": "The code imports necessary libraries and modules, loads an API key from a .env file, and creates functions to generate summaries of code and summaries of summaries using an LLM (language model). It also includes a function to create an LLM client based on configuration settings, a function to check if a prompt has too many tokens for the LLM to handle, and a function to count the number of tokens in a given input."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/llm_chains.py",
+                    "summary": "The code imports necessary libraries and modules, loads an API key from a .env file, and imports configuration variables from a YAML file. It also defines a function that uses a language model to create summaries from input text."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/hash_register.py",
+                    "summary": "The code is a class called `HashRegister` that keeps track of changes to input-output pairs. It uses the `hashlib` library to create a hash for the input value and stores it in a dictionary. It also has methods to set and get the input-output pairs, as well as check if the input has changed since the last update. There are also functions to load and save the hashes to a file."
+                }
+            ],
+            "time": "9 seconds",
+            "max_tokens": 128,
+            "model_name": "gpt-3.5-turbo-instruct",
+            "model_chat_name": "gpt-3.5-turbo-1106",
+            "prompts": {
+                "code_prompt": "\n    Write a concise summary for the code delineated by the triple backticks. Don't inlcude generalities, focus on specifics. \n    File name: {file_name}\n    Code: ```{code}```\n",
+                "summaries_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    Component name: {component}\n    List of Summaries: ```{summaries}```\n    \n    Based on this list of summaries, provide a consice summary of the component. Don't inlcude generalities, focus on specifics.",
+                "map_prompt": "\"The following is a set of summaries describing a parts of a codebase component. \nSummaries: {text}\n\nBased on the list of summaries, distil a general description of the component\nHelpful Answer:\n",
+                "reduce_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    List of Summaries: ```{text}```\n\n    Take these summaries and distill them into a final consolidated summary of the component.\n    Helpful answer:"
+            }
+        },
+        {
+            "path_str": "/Users/fniessink/Developer/LLM_experiments/src",
+            "summary": "The `src` component is a collection of Python scripts and classes that import necessary libraries and modules, load API keys and configuration variables, and use language models to generate summaries of code and codebase components. It also includes functions for managing input-output pairs and storing hashes in a dictionary.",
+            "summaries": [
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/add_to_JSON.py",
+                    "summary": "This code is a Python script that updates a JSON file by importing necessary libraries and config variables, defining a function to add data to the JSON file, and using the function to update the file with new data. It also removes a specific key from the new data before adding it to the file."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/prompt_templates.py",
+                    "summary": "This code contains two functions, `code_summary_prompt` and `summaries_summary_prompt`, which generate prompts for summarizing code and codebase components, respectively. The `code_summary_prompt` function takes in a file name and code as input and uses a template to generate a prompt for summarizing the code. Similarly, the `summaries_summary_prompt` function takes in a component name and a list of summaries as input and uses a template to generate a prompt for summarizing the component. The code also includes templates for chaining prompts, which can be used to generate prompts for summarizing multiple parts of a codebase component and then consolid"
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/llm.py",
+                    "summary": "The code imports necessary libraries and modules, loads an API key from a .env file, and creates functions to generate summaries of code and summaries of summaries using an LLM (language model). It also includes a function to create an LLM client based on configuration settings, a function to check if a prompt has too many tokens for the LLM to handle, and a function to count the number of tokens in a given input."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/llm_chains.py",
+                    "summary": "The code imports necessary libraries and modules, loads an API key from a .env file, and imports configuration variables from a YAML file. It also defines a function that uses a language model to create summaries from input text."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/hash_register.py",
+                    "summary": "The code is a class called `HashRegister` that keeps track of changes to input-output pairs. It uses the `hashlib` library to create a hash for the input value and stores it in a dictionary. It also has methods to set and get the input-output pairs, as well as check if the input has changed since the last update. There are also functions to load and save the hashes to a file."
+                }
+            ],
+            "time": "2 seconds",
+            "max_tokens": 128,
+            "model_name": "gpt-3.5-turbo-instruct",
+            "model_chat_name": "gpt-3.5-turbo-1106",
+            "prompts": {
+                "code_prompt": "\n    Write a concise summary for the code delineated by the triple backticks. Don't inlcude generalities, focus on specifics. \n    File name: {file_name}\n    Code: ```{code}```\n",
+                "summaries_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    Component name: {component}\n    List of Summaries: ```{summaries}```\n    \n    Based on this list of summaries, provide a consice summary of the component. Don't inlcude generalities, focus on specifics.",
+                "map_prompt": "\"The following is a set of summaries describing a parts of a codebase component. \nSummaries: {text}\n\nBased on the list of summaries, distil a general description of the component\nHelpful Answer:\n",
+                "reduce_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    List of Summaries: ```{text}```\n\n    Take these summaries and distill them into a final consolidated summary of the component.\n    Helpful answer:"
+            }
+        },
+        {
+            "path_str": "/Users/fniessink/Developer/LLM_experiments/src",
+            "summary": "The `src` component is a collection of Python scripts and classes that import necessary libraries and modules, generate prompts for summarizing code components, and use language models to create summaries from input text. It also includes a `HashRegister` class for tracking changes to input-output pairs.",
+            "summaries": [
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/add_to_JSON.py",
+                    "summary": "This code is a Python script that updates a JSON file by importing necessary libraries and config variables, defining a function to add data to the JSON file, and using the function to update the file with new data. It also removes a specific key from the new data before adding it to the file."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/prompt_templates.py",
+                    "summary": "The code includes functions to generate prompts for summarizing code components and consolidating multiple summaries into a single summary. The code uses a template with input variables to generate the prompts, and the prompts are formatted with the relevant information (file name, code, component name, summaries). The prompts are designed to help users provide concise and specific summaries without including generalities."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/llm.py",
+                    "summary": "The code imports necessary libraries and modules, loads an API key from a .env file, and creates functions to generate summaries of code and summaries of summaries using an LLM (language model). It also includes a function to create an LLM client based on configuration settings, a function to check if a prompt has too many tokens for the LLM to handle, and a function to count the number of tokens in a given input."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/llm_chains.py",
+                    "summary": "The code imports necessary libraries and modules, loads an API key from a .env file, and imports configuration variables from a YAML file. It also defines a function that uses a language model to create summaries from input text."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/hash_register.py",
+                    "summary": "The code is a class called `HashRegister` that keeps track of changes to input-output pairs. It uses the `hashlib` library to create a hash for the input value and stores it in a dictionary. It also has methods to set and get the input-output pairs, as well as check if the input has changed since the last update. There are also functions to load and save the hashes to a file."
+                }
+            ],
+            "time": "3 seconds",
+            "max_tokens": 128,
+            "model_name": "gpt-3.5-turbo-instruct",
+            "model_chat_name": "gpt-3.5-turbo-1106",
+            "prompts": {
+                "code_prompt": "\n    Write a concise summary for the code delineated by the triple backticks. Don't include generalities, focus on specifics.\n    File name: {file_name}\n    Code: ```{code}```\n",
+                "summaries_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    Component name: {component}\n    List of Summaries: ```{summaries}```\n\n    Based on this list of summaries, provide a consice summary of the component. Don't include generalities, focus on specifics.",
+                "map_prompt": "\"The following is a set of summaries describing a parts of a codebase component.\nSummaries: {text}\n\nBased on the list of summaries, distil a general description of the component\nHelpful Answer:\n",
+                "reduce_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    List of Summaries: ```{text}```\n\n    Take these summaries and distill them into a final consolidated summary of the component.\n    Helpful answer:"
+            }
+        },
+        {
+            "path_str": "/Users/fniessink/Developer/LLM_experiments/src",
+            "summary": "The `src` component is a collection of Python scripts and classes that import necessary libraries and modules, generate prompts for summarizing code components, and use language models to create summaries from input text. It also includes a `HashRegister` class for tracking changes to input-output pairs.",
+            "summaries": [
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/add_to_JSON.py",
+                    "summary": "This code is a Python script that updates a JSON file by importing necessary libraries and config variables, defining a function to add data to the JSON file, and using the function to update the file with new data. It also removes a specific key from the new data before adding it to the file."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/prompt_templates.py",
+                    "summary": "The code includes functions to generate prompts for summarizing code components and consolidating multiple summaries into a single summary. The code uses a template with input variables to generate the prompts, and the prompts are formatted with the relevant information (file name, code, component name, summaries). The prompts are designed to help users provide concise and specific summaries without including generalities."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/llm.py",
+                    "summary": "The code imports necessary libraries and modules, loads an API key from a .env file, and creates functions to generate summaries of code and summaries of summaries using an LLM (language model). It also includes a function to create an LLM client based on configuration settings, a function to check if a prompt has too many tokens for the LLM to handle, and a function to count the number of tokens in a given input."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/llm_chains.py",
+                    "summary": "The code imports necessary libraries and modules, loads an API key from a .env file, and imports configuration variables from a YAML file. It also defines a function that uses a language model to create summaries from input text."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/hash_register.py",
+                    "summary": "The code is a class called `HashRegister` that keeps track of changes to input-output pairs. It uses the `hashlib` library to create a hash for the input value and stores it in a dictionary. It also has methods to set and get the input-output pairs, as well as check if the input has changed since the last update. There are also functions to load and save the hashes to a file."
+                }
+            ],
+            "time": "2 seconds",
+            "max_tokens": 128,
+            "model_name": "gpt-3.5-turbo-instruct",
+            "model_chat_name": "gpt-3.5-turbo-1106",
+            "prompts": {
+                "code_prompt": "\n    Write a concise summary for the code delineated by the triple backticks. Don't include generalities, focus on specifics.\n    File name: {file_name}\n    Code: ```{code}```\n",
+                "summaries_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    Component name: {component}\n    List of Summaries: ```{summaries}```\n\n    Based on this list of summaries, provide a consice summary of the component. Don't include generalities, focus on specifics.",
+                "map_prompt": "\"The following is a set of summaries describing a parts of a codebase component.\nSummaries: {text}\n\nBased on the list of summaries, distil a general description of the component\nHelpful Answer:\n",
+                "reduce_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    List of Summaries: ```{text}```\n\n    Take these summaries and distill them into a final consolidated summary of the component.\n    Helpful answer:"
+            }
+        },
+        {
+            "path_str": "/Users/fniessink/Developer/LLM_experiments/src",
+            "summary": "The `src` component is a collection of Python scripts and classes that import necessary libraries and modules, generate prompts for summarizing code components, and use language models to create summaries from input text. It also includes a `HashRegister` class for tracking changes to input-output pairs.",
+            "summaries": [
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/add_to_JSON.py",
+                    "summary": "This code is a Python script that updates a JSON file by importing necessary libraries and config variables, defining a function to add data to the JSON file, and using the function to update the file with new data. It also removes a specific key from the new data before adding it to the file."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/prompt_templates.py",
+                    "summary": "The code includes functions to generate prompts for summarizing code components and consolidating multiple summaries into a single summary. The code uses a template with input variables to generate the prompts, and the prompts are formatted with the relevant information (file name, code, component name, summaries). The prompts are designed to help users provide concise and specific summaries without including generalities."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/llm.py",
+                    "summary": "The code imports necessary libraries and modules, loads an API key from a .env file, and creates functions to generate summaries of code and summaries of summaries using an LLM (language model). It also includes a function to create an LLM client based on configuration settings, a function to check if a prompt has too many tokens for the LLM to handle, and a function to count the number of tokens in a given input."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/llm_chains.py",
+                    "summary": "The code imports necessary libraries and modules, loads an API key from a .env file, and imports configuration variables from a YAML file. It also defines a function that uses a language model to create summaries from input text."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/hash_register.py",
+                    "summary": "The code is a class called `HashRegister` that keeps track of changes to input-output pairs. It uses the `hashlib` library to create a hash for the input value and stores it in a dictionary. It also has methods to set and get the input-output pairs, as well as check if the input has changed since the last update. There are also functions to load and save the hashes to a file."
+                }
+            ],
+            "time": "2 seconds",
+            "max_tokens": 128,
+            "model_name": "gpt-3.5-turbo-instruct",
+            "model_chat_name": "gpt-3.5-turbo-1106",
+            "prompts": {
+                "code_prompt": "\n    Write a concise summary for the code delineated by the triple backticks. Don't include generalities, focus on specifics.\n    File name: {file_name}\n    Code: ```{code}```\n",
+                "summaries_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    Component name: {component}\n    List of Summaries: ```{summaries}```\n\n    Based on this list of summaries, provide a consice summary of the component. Don't include generalities, focus on specifics.",
+                "map_prompt": "\"The following is a set of summaries describing a parts of a codebase component.\nSummaries: {text}\n\nBased on the list of summaries, distil a general description of the component\nHelpful Answer:\n",
+                "reduce_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    List of Summaries: ```{text}```\n\n    Take these summaries and distill them into a final consolidated summary of the component.\n    Helpful answer:"
+            }
+        },
+        {
+            "path_str": "/Users/fniessink/Developer/LLM_experiments/src",
+            "summary": "The `src` component is a collection of Python scripts and classes that import necessary libraries and modules, generate prompts for summarizing code components, and use language models to create summaries from input text. It also includes a `HashRegister` class for tracking changes to input-output pairs.",
+            "summaries": [
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/add_to_JSON.py",
+                    "summary": "This code is a Python script that updates a JSON file by importing necessary libraries and config variables, defining a function to add data to the JSON file, and using the function to update the file with new data. It also removes a specific key from the new data before adding it to the file."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/prompt_templates.py",
+                    "summary": "The code includes functions to generate prompts for summarizing code components and consolidating multiple summaries into a single summary. The code uses a template with input variables to generate the prompts, and the prompts are formatted with the relevant information (file name, code, component name, summaries). The prompts are designed to help users provide concise and specific summaries without including generalities."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/llm.py",
+                    "summary": "The code imports necessary libraries and modules, loads an API key from a .env file, and creates functions to generate summaries of code and summaries of summaries using an LLM (language model). It also includes a function to create an LLM client based on configuration settings, a function to check if a prompt has too many tokens for the LLM to handle, and a function to count the number of tokens in a given input."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/llm_chains.py",
+                    "summary": "The code imports necessary libraries and modules, loads an API key from a .env file, and imports configuration variables from a YAML file. It also defines a function that uses a language model to create summaries from input text."
+                },
+                {
+                    "path_str": "/Users/fniessink/Developer/LLM_experiments/src/hash_register.py",
+                    "summary": "The code is a class called `HashRegister` that keeps track of changes to input-output pairs. It uses the `hashlib` library to create a hash for the input value and stores it in a dictionary. It also has methods to set and get the input-output pairs, as well as check if the input has changed since the last update. There are also functions to load and save the hashes to a file."
+                }
+            ],
+            "time": "0 seconds",
+            "max_tokens": 128,
+            "model_name": "gpt-3.5-turbo-instruct",
+            "model_chat_name": "gpt-3.5-turbo-1106",
+            "prompts": {
+                "code_prompt": "\n    Write a concise summary for the code delineated by the triple backticks. Don't include generalities, focus on specifics.\n    File name: {file_name}\n    Code: ```{code}```\n",
+                "summaries_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    Component name: {component}\n    List of Summaries: ```{summaries}```\n\n    Based on this list of summaries, provide a consice summary of the component. Don't include generalities, focus on specifics.",
+                "map_prompt": "\"The following is a set of summaries describing a parts of a codebase component.\nSummaries: {text}\n\nBased on the list of summaries, distil a general description of the component\nHelpful Answer:\n",
+                "reduce_prompt": "The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.\n    List of Summaries: ```{text}```\n\n    Take these summaries and distill them into a final consolidated summary of the component.\n    Helpful answer:"
+            }
+        }
     ]
 }
