@@ -9,13 +9,13 @@ chat_code_summary_template = ChatPromptTemplate.from_messages(
 
 chat_sum_summary_template = ChatPromptTemplate.from_messages(
     [
-        ("system", "You are a helpful code expert. Your task is analyzing, and consisely summarizing code components."),
-        ("""The following is a list of summaries describing a parts of a codebase component. 
+        ("system", "You are a helpful code expert. Your task is analyzing, and consisely summarizing codebases."),
+        ("""The following is a list of summaries describing part of a codebase. 
          
          Component name: {component}
          Summaries: {summaries}
          
-         Based on the list of summaries, distil a general description of the component. 
+         Based on the list of summaries, distil a general description. Explain how it functions like you would to somebody with limited programming knowledge. 
          Helpful Answer:"""),
     ]
 )
@@ -25,5 +25,3 @@ def chat_code_summary_prompt(file_name, code):
 
 def chat_sum_summary_prompt(component, summaries):
     return chat_sum_summary_template.format_messages(component=component, summaries=summaries)
-
-print(chat_code_summary_template)

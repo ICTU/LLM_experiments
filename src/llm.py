@@ -34,10 +34,10 @@ def llm_summarize_summary(component: str, summaries: list[str]) -> str:
     """Generate a summary of summaries, using an LLM."""
     if cfg.MODEL_TYPE == "completion":
         llm = create_llm(cfg.MAX_TOKENS_SUM)
-        prompt = code_summary_prompt(component, summaries)
+        prompt = summaries_summary_prompt(component, summaries)
     else:
         llm = create_chat_llm(cfg.MAX_TOKENS_SUM)
-        prompt = chat_code_summary_prompt(component, summaries)
+        prompt = chat_sum_summary_prompt(component, summaries)
     if is_prompt_too_big(llm, prompt):
         output = chain_summarize_summaries(summaries)  # FIXME: What is the prompt used here?
     else:
