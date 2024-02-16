@@ -12,6 +12,7 @@ from src.add_to_JSON import write_json
 from src.hash_register import load_hashes, save_hashes, HashRegister
 from src.llm import llm_generate_summary, llm_summarize_summary
 from src.prompt_templates import code_template, summaries_template, map_template, reduce_template
+from src.chat_prompt_templates import chat_code_summary_template, chat_sum_summary_template
 
 
 with open('config/config.yml', 'r', encoding='utf8') as ymlfile:
@@ -25,7 +26,8 @@ class Summary(TypedDict):
     summaries: list[Summary]
     prompts: dict
     time: str
-    max_tokens: int
+    max_tokens_chat: int
+    max_tokens_summaries: int
     model_name: str
     model_chat_name: str
 
@@ -108,14 +110,17 @@ def skip_file(filename: Path) -> bool:
 def add_info_to_dict(summary, time):
     """Add configuration settings info to dictionary"""
     summary['time'] = time
-    summary['max_tokens'] = cfg.MAX_TOKENS
+    summary['max_tokens_chat'] = cfg.MAX_TOKENS_CODE
+    summary['max_tokens_summaries'] = cfg.MAX_TOKENS_SUM
     summary['model_name'] = cfg.MODEL_NAME
     summary['model_chat_name'] = cfg.MODEL_CHAT_NAME
     summary['prompts'] = {
         'code_prompt':code_template,
         'summaries_prompt':summaries_template,
         'map_prompt':map_template,
-        'reduce_prompt':reduce_template
+        'reduce_prompt':reduce_template,
+        'chat_code_prompt':str(chat_code_summary_template),
+        'chat_summaries_prompt': str(chat_sum_summary_template)
         }
     return summary
 
