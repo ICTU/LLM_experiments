@@ -13,6 +13,7 @@ from src.hash_register import load_hashes, save_hashes, HashRegister
 from src.llm import llm_generate_summary, llm_summarize_summary
 from src.prompt_templates import code_template, summaries_template, map_template, reduce_template
 from src.chat_prompt_templates import chat_code_summary_template, chat_sum_summary_template
+from src.skip_dir import skip_file, skip_dir
 
 
 with open('config/config.yml', 'r', encoding='utf8') as ymlfile:
@@ -84,27 +85,6 @@ def summarize_path(path: Path, hash_register: HashRegister) -> Summary:
     summaries = [summarize_path(subpath, hash_register) for subpath in dirs]
     summaries.append(summarize_files(path, hash_register))
     return summarize_summaries(path, summaries, hash_register)
-
-
-def skip_dir(path: Path) -> bool:
-    """Return whether to skip the directory."""
-    dirs_to_skip = [".*", "*.egg-info", "build", "venv", "__pycache__", "testdata"]
-    for dir in dirs_to_skip:
-        for part in path.parts:
-            if part in (".", ".."):
-                continue
-            if Path(part).match(dir):
-                return True
-    return False
-
-
-def skip_file(filename: Path) -> bool:
-    """Return whether to skip the file."""
-    filenames_to_skip = [".*", "__init__.py", "*.txt", "*.xml", "*.json", "*.png", "*.ico", "*.gif", "*.zip"]
-    for filename_to_skip in filenames_to_skip:
-        if filename.match(filename_to_skip):
-            return True
-    return False
 
 
 def add_info_to_dict(summary, time):
