@@ -5,6 +5,8 @@ from langchain_openai import OpenAI, ChatOpenAI
 
 from src.llm_chains import chain_summarize_summaries
 from src.prompt_templates import code_summary_prompt, summaries_summary_prompt
+from src.chat_prompt_templates import chat_code_summary_prompt, chat_sum_summary_prompt
+from tokens_weighting import max_num_tokens
 
 #load API key from .env
 load_dotenv()
@@ -16,38 +18,50 @@ with open('config/config.yml', 'r', encoding='utf8') as ymlfile:
 
 def llm_generate_summary(file_name: str, code: str) -> str:
     """Generate a summary of the code, using an LLM."""
-    llm = create_llm()
-    prompt = code_summary_prompt(file_name, code)
+    max_tokens = max_num_tokens(file_name, cfg.BASE_MAX_TOKENS_CODE)
+    if cfg.MODEL_TYPE == "completion":
+        llm = create_llm(max_tokens=max_tokens)
+        prompt = code_summary_prompt(file_name, code)
+    else:
+        llm = create_chat_llm(max_tokens=max_tokens)
+        prompt = chat_code_summary_prompt(file_name, code)
     if is_prompt_too_big(llm, prompt):
         output = chain_summarize_summaries(code)  # FIXME: What is the prompt used here?
     else:
         output = llm.invoke(prompt)
-    return output.strip()
+    return output.content #use if llm is not chat: .strip()
 
 
 def llm_summarize_summary(component: str, summaries: list[str]) -> str:
     """Generate a summary of summaries, using an LLM."""
-    llm = create_llm()
-    prompt = summaries_summary_prompt(component, summaries)
+    max_tokens = max_num_tokens(component, cfg.BASE_MAX_TOKENS_SUM)
+    if cfg.MODEL_TYPE == "completion":
+        llm = create_llm(max_tokens=max_tokens)
+        prompt = summaries_summary_prompt(component, summaries)
+    else:
+        llm = create_chat_llm(max_tokens=max_tokens)
+        prompt = chat_sum_summary_prompt(component, summaries)
     if is_prompt_too_big(llm, prompt):
         output = chain_summarize_summaries(summaries)  # FIXME: What is the prompt used here?
     else:
         output = llm.invoke(prompt)
-    return output.strip()
+    return output.content  #use if llm is not chat: .strip()
 
 
-def create_llm() -> OpenAI | ChatOpenAI:
-    """Create an LLM client to use based on the configuration."""
-    llm_class = OpenAI if cfg.MODEL_TYPE == "completion" else ChatOpenAI
-    return llm_class(model=cfg.MODEL_NAME, temperature=cfg.TEMPERATURE, max_tokens=cfg.MAX_TOKENS)
+def create_llm(max_tokens):
+    """Create an completions LLM client."""
+    return OpenAI(model=cfg.MODEL_NAME, temperature=cfg.TEMPERATURE, max_tokens=max_tokens)
 
+def create_chat_llm(max_tokens):
+    """Create an completions LLM client."""
+    return ChatOpenAI(model=cfg.MODEL_CHAT_NAME, temperature=cfg.TEMPERATURE, max_tokens=max_tokens)
 
 def is_prompt_too_big(llm, prompt: str) -> bool:
     """Return whether the prompt has more tokens than fit into the context."""
-    return get_num_tokens(prompt) > llm.max_context_size
+    return get_num_tokens(prompt) > cfg.CONTEXT_WINDOW
 
 
 def get_num_tokens(input: str) -> int:
     """Return the number of tokens in prompt or output."""
     llm = OpenAI(model=cfg.MODEL_NAME)  # FIXME: Add comment explaining why we always use OpenAI to count tokens
-    return llm.get_num_tokens(text=input)
+    return llm.get_num_tokens(text=str(input))
