@@ -6,7 +6,7 @@ from langchain_openai import OpenAI, ChatOpenAI
 from src.llm_chains import chain_summarize_summaries
 from src.prompt_templates import code_summary_prompt, summaries_summary_prompt
 from src.chat_prompt_templates import chat_code_summary_prompt, chat_sum_summary_prompt
-from tokens_weighting import max_num_tokens
+from src.tokens_weighting import max_num_tokens
 
 #load API key from .env
 load_dotenv()
