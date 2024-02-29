@@ -2,10 +2,11 @@ import yaml
 import box
 from dotenv import load_dotenv
 from langchain_openai import OpenAI, ChatOpenAI
+from pathlib import Path
 
 from src.llm_chains import chain_summarize_summaries
 from src.prompt_templates import code_summary_prompt, summaries_summary_prompt
-from src.chat_prompt_templates import chat_code_summary_prompt, chat_sum_summary_prompt
+from src.chat_prompt_templates import chat_code_summary_prompt, chat_sum_summary_prompt, one_shot_code_summary_prompt, one_shot_sum_summary_prompt
 from src.tokens_weighting import max_num_tokens
 
 #load API key from .env
@@ -16,15 +17,15 @@ with open('config/config.yml', 'r', encoding='utf8') as ymlfile:
     cfg = box.Box(yaml.safe_load(ymlfile))
 
 
-def llm_generate_summary(file_name: str, code: str) -> str:
+def llm_generate_summary(file_path: Path, code: str) -> str:
     """Generate a summary of the code, using an LLM."""
-    max_tokens = max_num_tokens(file_name, cfg.BASE_MAX_TOKENS_CODE)
+    max_tokens = max_num_tokens(file_path, cfg.BASE_MAX_TOKENS_CODE)
     if cfg.MODEL_TYPE == "completion":
         llm = create_llm(max_tokens=max_tokens)
-        prompt = code_summary_prompt(file_name, code)
+        prompt = code_summary_prompt(file_path.name, code)
     else:
         llm = create_chat_llm(max_tokens=max_tokens)
-        prompt = chat_code_summary_prompt(file_name, code)
+        prompt = one_shot_code_summary_prompt(file_path.name, code)
     if is_prompt_too_big(llm, prompt):
         output = chain_summarize_summaries(code)  # FIXME: What is the prompt used here?
     else:
@@ -32,15 +33,15 @@ def llm_generate_summary(file_name: str, code: str) -> str:
     return output.content #use if llm is not chat: .strip()
 
 
-def llm_summarize_summary(component: str, summaries: list[str]) -> str:
+def llm_summarize_summary(component_path: Path, summaries: list[str]) -> str:
     """Generate a summary of summaries, using an LLM."""
-    max_tokens = max_num_tokens(component, cfg.BASE_MAX_TOKENS_SUM)
+    max_tokens = max_num_tokens(component_path, cfg.BASE_MAX_TOKENS_SUM)
     if cfg.MODEL_TYPE == "completion":
         llm = create_llm(max_tokens=max_tokens)
-        prompt = summaries_summary_prompt(component, summaries)
+        prompt = summaries_summary_prompt(component_path.name, summaries)
     else:
         llm = create_chat_llm(max_tokens=max_tokens)
-        prompt = chat_sum_summary_prompt(component, summaries)
+        prompt = one_shot_sum_summary_prompt(component_path.name, summaries)
     if is_prompt_too_big(llm, prompt):
         output = chain_summarize_summaries(summaries)  # FIXME: What is the prompt used here?
     else:
