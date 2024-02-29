@@ -52,7 +52,6 @@ def summarize_file(filename: Path, hash_register: HashRegister) -> Summary:
         hash_register.set(str(filename), contents, summary_text)
     else:
         summary_text = hash_register.get(str(filename))
-    print(summary_text)
     return Summary(path=str(filename), summary=summary_text)
 
 
@@ -71,7 +70,6 @@ def summarize_summaries(
             hash_register.set(key, str(summary_texts), summary_text)
         else:
             summary_text = hash_register.get(key)
-        print(summary_text)
     except ValueError:
         print(path)
         print(summaries)
@@ -85,7 +83,7 @@ def summarize_path(path: Path, hash_register: HashRegister) -> Summary:
     dirs = [subpath for subpath in path.iterdir() if subpath.is_dir() and not skip_dir(subpath)]
     summaries = [summarize_path(subpath, hash_register) for subpath in dirs]
     summaries.append(summarize_files(path, hash_register))
-    return summarize_summaries(path, summaries, hash_register)
+    return summaries[0] if len(summaries) == 1 else summarize_summaries(path, summaries, hash_register)
 
 
 def add_info_to_dict(summary, time):
