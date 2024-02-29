@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Summary Report</title>
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+    background-color: #f5f5f5;
+  }
+
+  h1 {
+    color: #444;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  h2 {
+    color: #555;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+  }
+
+  h3 {
+    color: #666;
+  }
+
+  .summary-container {
+    max-width: 960px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .configuration {
+    background-color: #fafafa;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  .summary-detail, .config-details {
+    margin-top: 20px;
+  }
+
+  .summary-title {
+    font-weight: bold;
+    cursor: pointer;
+    display: block;
+    padding: 10px;
+    background-color: #eee;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+
+  .summary-title:hover {
+    background-color: #ddd;
+  }
+
+  details {
+    border-left: 2px solid #ccc;
+    padding-left: 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+
+  summary {
+    outline: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none
+  }
+
+  summary:before {
+    content: '➤';
+    margin-right: 5px;
+    font-size: 0.9em;
+  }
+
+  details[open] summary:before {
+    content: '▼';
+  }
+
+  .prompt-list, .summaries-list {
+    padding-left: 20px;
+  }
+
+  .prompt-list li, .config-details p {
+    margin-bottom: 5px;
+  }
+
+  p {
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+<h1>Summary Report</h1>
+<div class="summary-container">
+  <h2>Summary of C:\Users\...\notifier</h2>
+  <div class="configuration">
+    <h3>Configurations</h3>
+    <details class="prompts-details">
+      <summary class="summary-title">Prompts Details</summary>
+      <ul class="prompt-list">
+      <ul>
+        <li><b>code_prompt:</b> 
+    Write a concise summary for the code delineated by the triple backticks. Don't include generalities, focus on specifics.
+    File name: {file_name}
+    Code: ```{code}```
+</li>
+        <li><b>summaries_prompt:</b> The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.
+    Component name: {component}
+    List of Summaries: ```{summaries}```
+
+    Based on this list of summaries, provide a consice summary of the component. Don't include generalities, focus on specifics.</li>
+        <li><b>map_prompt:</b> "The following is a set of summaries describing a parts of a codebase component.
+Summaries: {text}
+
+Based on the list of summaries, distil a general description of the component
+Helpful Answer:
+</li>
+        <li><b>reduce_prompt:</b> The following list of summaries delineated by triple backticks describes files and directories forming a codebase component.
+    List of Summaries: ```{text}```
+
+    Take these summaries and distill them into a final consolidated summary of the component.
+    Helpful answer:</li>
+        <li><b>chat_code_prompt:</b> input_variables=['code', 'file_name'] messages=[SystemMessagePromptTemplate(prompt=PromptTemplate(input_variables=[], template='You are a helpful code expert. Your task is analyzing, and consisely summarizing code files.')), HumanMessagePromptTemplate(prompt=PromptTemplate(input_variables=['code', 'file_name'], template="Provide a summary for the following code file, don't include generalities, focus on specifics, file name: {file_name}, code: {code}"))]</li>
+        <li><b>chat_summaries_prompt:</b> input_variables=['component', 'summaries'] messages=[SystemMessagePromptTemplate(prompt=PromptTemplate(input_variables=[], template='You are a helpful code expert. Your task is analyzing, and consisely summarizing codebases.')), HumanMessagePromptTemplate(prompt=PromptTemplate(input_variables=['component', 'summaries'], template='The following is a list of summaries describing part of a codebase. \n         \n        Component name: {component}\n        Summaries: ```{summaries}```\n         \n        Based on the list of summaries, distil a general description. Explain how it functions like you would to somebody with limited programming knowledge. \n        Helpful Answer:'))]</li>
+        <li><b>chat_code_1shot:</b> input_variables=['code', 'example_answer', 'example_code', 'example_name', 'file_name'] messages=[SystemMessagePromptTemplate(prompt=PromptTemplate(input_variables=[], template='You are a helpful code expert. Your task is analyzing, and consisely summarizing code files.')), HumanMessagePromptTemplate(prompt=PromptTemplate(input_variables=['example_code', 'example_name'], template="Provide a summary for the following code file, don't include generalities, focus on specifics.\n        file name: {example_name}\n        code: ```{example_code}\n```")), AIMessagePromptTemplate(prompt=PromptTemplate(input_variables=['example_answer'], template='{example_answer}')), HumanMessagePromptTemplate(prompt=PromptTemplate(input_variables=['code', 'file_name'], template="Provide a summary for the following code file, don't include generalities, focus on specifics.\n        file name: {file_name}\n        code: ```{code}```"))]</li>
+        <li><b>chat_sum_1shot:</b> input_variables=['component', 'example_answer', 'example_component', 'example_summaries', 'summaries'] messages=[SystemMessagePromptTemplate(prompt=PromptTemplate(input_variables=[], template='You are a helpful code expert. Your task is analyzing, and consisely summarizing codebases.')), HumanMessagePromptTemplate(prompt=PromptTemplate(input_variables=['example_component', 'example_summaries'], template='The following is a list of summaries describing part of a codebase. \n         \n         Component name: {example_component}\n         Summaries: {example_summaries}\n         \n         Based on the list of summaries, distil a general description. Explain how it functions like you would to somebody with limited programming knowledge. \n         Helpful Answer:')), AIMessagePromptTemplate(prompt=PromptTemplate(input_variables=['example_answer'], template='.{example_answer}')), HumanMessagePromptTemplate(prompt=PromptTemplate(input_variables=['component', 'summaries'], template='The following is a list of summaries describing part of a codebase. \n         \n         Component name: {component}\n         Summaries: {summaries}\n         \n         Based on the list of summaries, distil a general description. Explain how it functions like you would to somebody with limited programming knowledge. \n         Helpful Answer:'))]</li>
+      </ul>
+    </details>
+    <p><b>time:</b> 0 seconds</p>
+    <p><b>max_base_tokens_code:</b> 90</p>
+    <p><b>max_base_tokens_summaries:</b> 120</p>
+    <p><b>model_type:</b> chat</p>
+    <p><b>model_name:</b> gpt-3.5-turbo-0125</p>
+</div>
+<p><b>path:</b> C:\Users\...\notifier</p>
+<p><b>summary:</b>  **What it does**: The "notifier" component manages the process of sending notifications about quality metrics in the Quality-time application.
+
+**How it functions**: It automates tasks related to managing a Python project, such as updating dependencies, running tests, and ensuring code quality and security. It also handles data retrieval, processing, and notifications, sending alerts to Microsoft Teams based on specific conditions. The component sets up a Docker image for the Python application, managing dependencies, configurations, and tools for the notifier project. This ensures the application is properly set up to send notifications and maintains its functionality and performance.</p>
+<details class="summary-detail" style="margin-left: 0px;">
+  <summary class="summary-title" style="font-weight: bold; cursor: pointer;">Summaries used as input</summary>
+<h2 style="margin-left: 20px; color: #333366;">Summary of ci</h2>
+<p style="margin-left: 20px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\ci</p>
+<p style="margin-left: 20px;"><b>summary:</b> **What it does**: The "ci" component is a set of shell scripts that automate various tasks related to managing and maintaining a Python project.
+
+**How it functions**: The scripts handle tasks like updating project dependencies, installing required packages, running security and code quality checks, and executing unit tests with coverage analysis. They use specific tools like `pip-compile`, `pip`, Ruff, Mypy, pip-audit, Safety, Bandit, Vulture, and `coverage` to perform these tasks efficiently and ensure the project's code quality, security, and test coverage are maintained.</p>
+<details class="summary-detail" style="margin-left: 20px;">
+  <summary class="summary-title" style="font-weight: bold; cursor: pointer;">Summaries used as input</summary>
+<h2 style="margin-left: 40px; color: #333366;">Summary of pip-compile.sh</h2>
+<p style="margin-left: 40px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\ci\pip-compile.sh</p>
+<p style="margin-left: 40px;"><b>summary:</b> **What it does**: A shell script that updates compiled requirements files for a Python project.
+
+        **How it does it**: Defines a function to run commands with colored output, then runs `pip-compile` commands to update requirements files with specified options.</p>
+<h2 style="margin-left: 40px; color: #333366;">Summary of pip-install.sh</h2>
+<p style="margin-left: 40px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\ci\pip-install.sh</p>
+<p style="margin-left: 40px;"><b>summary:</b> **What it does**: Shell script for installing Python dependencies specified in different requirement files.
+
+        **How it does it**: Defines a function `run` to execute commands with colored output, then installs dependencies from two separate requirement files using `pip`.</p>
+<h2 style="margin-left: 40px; color: #333366;">Summary of quality.sh</h2>
+<p style="margin-left: 40px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\ci\quality.sh</p>
+<p style="margin-left: 40px;"><b>summary:</b> **What it does**: This script is a bash script that runs various security and code quality tools on a Python project.
+
+        **How it does it**: It runs tools like Ruff for code checking and formatting, Mypy for static type checking, pip-audit for checking for vulnerabilities, Safety for checking dependencies for known security issues, Bandit for security analysis, and Vulture for finding dead code.</p>
+<h2 style="margin-left: 40px; color: #333366;">Summary of unittest.sh</h2>
+<p style="margin-left: 40px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\ci\unittest.sh</p>
+<p style="margin-left: 40px;"><b>summary:</b> **What it does**: Runs unit tests with coverage analysis and generates reports in various formats.
+
+        **How it does it**: Utilizes the `coverage` tool to run unit tests quietly, generate a text report, an HTML report, and an XML report.</p>
+</details>
+<h2 style="margin-left: 20px; color: #333366;">Summary of requirements</h2>
+<p style="margin-left: 20px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\requirements</p>
+<p style="margin-left: 20px;"><b>summary:</b> The "requirements" component in the codebase likely contains information about the software and hardware requirements needed to run the application. It may outline the necessary dependencies, libraries, and configurations needed for the codebase to function properly. This component ensures that the application can run smoothly on different systems and environments by specifying what is needed for it to work correctly.</p>
+<h2 style="margin-left: 20px; color: #333366;">Summary of src</h2>
+<p style="margin-left: 20px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\src</p>
+<p style="margin-left: 20px;"><b>summary:</b> **What it does**: Manages data retrieval, processing, and notifications in the Quality-time application.
+
+**How it does it**: Retrieves recent data from a database, processes it to determine metric changes, and sends notifications to Microsoft Teams based on specified conditions. It also handles the organization and calculation of metric data for notifications, periodically notifying users about red metrics. Additionally, it defines specific data types and classes for structured data handling and notification generation.</p>
+<details class="summary-detail" style="margin-left: 20px;">
+  <summary class="summary-title" style="font-weight: bold; cursor: pointer;">Summaries used as input</summary>
+<h2 style="margin-left: 40px; color: #333366;">Summary of database</h2>
+<p style="margin-left: 40px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\src\database</p>
+<p style="margin-left: 40px;"><b>summary:</b> **What it does**: Retrieves data from a MongoDB database, specifically recent measurements and reports related to specified metrics.
+
+**How it does it**: Uses queries to search for and retrieve the requested data, while also excluding certain unnecessary information to streamline the results.</p>
+<details class="summary-detail" style="margin-left: 40px;">
+  <summary class="summary-title" style="font-weight: bold; cursor: pointer;">Summaries used as input</summary>
+<h2 style="margin-left: 60px; color: #333366;">Summary of measurements.py</h2>
+<p style="margin-left: 60px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\src\database\measurements.py</p>
+<p style="margin-left: 60px;"><b>summary:</b> **What it does**: Retrieves recent measurements for specified metrics from a MongoDB database, excluding certain fields.
+
+        **How it does it**: Queries the database for measurements related to the specified metrics, limits the number of measurements per metric, and excludes certain fields from the results.</p>
+<h2 style="margin-left: 60px; color: #333366;">Summary of reports.py</h2>
+<p style="margin-left: 60px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\src\database\reports.py</p>
+<p style="margin-left: 60px;"><b>summary:</b> **What it does**: Retrieves reports and measurements from a database.
+
+        **How it does it**: Imports necessary modules and functions, defines a function to get reports and measurements from the database using helper functions.</p>
+</details>
+<h2 style="margin-left: 40px; color: #333366;">Summary of ms_teams.py</h2>
+<p style="margin-left: 40px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\src\destinations\ms_teams.py</p>
+<p style="margin-left: 40px;"><b>summary:</b> **What it does**: Sends notifications to Microsoft Teams using a webhook with formatted content about metric changes in quality reports.
+
+        **How it does it**: Constructs notification text with details about changed metrics and sends it to the specified Microsoft Teams destination using pymsteams.</p>
+<h2 style="margin-left: 40px; color: #333366;">Summary of models</h2>
+<p style="margin-left: 40px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\src\models</p>
+<p style="margin-left: 40px;"><b>summary:</b> **What it does**: Manages and processes data related to notifications in the Quality-time application.
+
+**How it does it**: It organizes and calculates metric data to determine status changes, and defines a structured data class for notifications, including report details and destination information.</p>
+<details class="summary-detail" style="margin-left: 40px;">
+  <summary class="summary-title" style="font-weight: bold; cursor: pointer;">Summaries used as input</summary>
+<h2 style="margin-left: 60px; color: #333366;">Summary of metric_notification_data.py</h2>
+<p style="margin-left: 60px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\src\models\metric_notification_data.py</p>
+<p style="margin-left: 60px;"><b>summary:</b> **What it does**: Handles metric data needed for notifications, including determining status changes based on measurements.
+
+        **How it does it**: Initializes notification data with metric, measurements, and subject information. Calculates new and old metric values and statuses based on the latest measurements. Provides a method to get a user-friendly status name from the data model.</p>
+<h2 style="margin-left: 60px; color: #333366;">Summary of notification.py</h2>
+<p style="margin-left: 60px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\src\models\notification.py</p>
+<p style="margin-left: 60px;"><b>summary:</b> **What it does**: Defines a data class for handling notifications, including report details, metrics, and destination information.
+
+        **How it does it**: Utilizes dataclasses to define the structure of a notification, including properties like report title and landing URL.</p>
+</details>
+<h2 style="margin-left: 40px; color: #333366;">Summary of notifier.py</h2>
+<p style="margin-left: 40px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\src\notifier\notifier.py</p>
+<p style="margin-left: 40px;"><b>summary:</b> **What it does**: Notifies users periodically about the number of red metrics based on reports and measurements in the database.
+
+        **How it does it**: 
+        - Records the current date and time in a file for health checks.
+        - Retrieves reports and measurements from the database.
+        - Determines notifications based on the most recent measurements seen.
+        - Sends notifications to MS Teams using a webhook.
+        - Sleeps for a specified duration between notifications.</p>
+<h2 style="margin-left: 40px; color: #333366;">Summary of type.py</h2>
+<p style="margin-left: 40px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\src\notifier_utilities\type.py</p>
+<p style="margin-left: 40px;"><b>summary:</b> **What it does**: Defines a specific type for JSON data in the Quality-time application.
+
+        **How it does it**: Creates an alias `JSON` for a dictionary with string keys and values of any type.</p>
+<h2 style="margin-left: 40px; color: #333366;">Summary of notification_strategy.py</h2>
+<p style="margin-left: 40px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\src\strategies\notification_strategy.py</p>
+<p style="margin-left: 40px;"><b>summary:</b> **What it does**: Provides a class for handling notifications based on metric changes in reports.
+
+        **How it does it**: The class `NotificationFinder` has a method `get_notifications` that processes reports and measurements to determine which metrics require notifications. It checks if a metric's status has changed since the last notification and generates notifications accordingly.</p>
+<h2 style="margin-left: 40px; color: #333366;">Summary of quality_time_notifier.py</h2>
+<p style="margin-left: 40px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\src\quality_time_notifier.py</p>
+<p style="margin-left: 40px;"><b>summary:</b> **What it does**: Starts a notification system that runs indefinitely, notifying users based on certain conditions.
+
+        **How it does it**: Sets the log level and sleep duration based on environment variables, then runs the notification process using asyncio.</p>
+</details>
+<h2 style="margin-left: 20px; color: #333366;">Summary of tests</h2>
+<p style="margin-left: 20px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\tests</p>
+<p style="margin-left: 20px;"><b>summary:</b> **What it does**: The "tests" component is responsible for checking if different parts of the codebase work as intended by running specific scenarios and checks.
+
+**How it does it**: It creates controlled environments to simulate interactions with databases, webhooks, and notification systems. By setting up test data and predefined scenarios, it verifies that functions like fetching data, sending notifications, and managing metrics behave correctly. The tests help ensure the software functions smoothly and identify and fix any issues that may arise.</p>
+<details class="summary-detail" style="margin-left: 20px;">
+  <summary class="summary-title" style="font-weight: bold; cursor: pointer;">Summaries used as input</summary>
+<h2 style="margin-left: 40px; color: #333366;">Summary of database</h2>
+<p style="margin-left: 40px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\tests\database</p>
+<p style="margin-left: 40px;"><b>summary:</b> **What it does**: Tests the functionality of retrieving and managing data from a MongoDB database in the codebase.
+
+**How it does it**: Sets up a controlled environment to simulate interactions with the database, creates test data to mimic real-world scenarios, and verifies that the code responsible for fetching reports and measurements behaves as expected.</p>
+<details class="summary-detail" style="margin-left: 40px;">
+  <summary class="summary-title" style="font-weight: bold; cursor: pointer;">Summaries used as input</summary>
+<h2 style="margin-left: 60px; color: #333366;">Summary of test_measurements.py</h2>
+<p style="margin-left: 60px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\tests\database\test_measurements.py</p>
+<p style="margin-left: 60px;"><b>summary:</b> **What it does**: Contains unit tests for the measurements collection functionality.
+
+        **How it does it**: Sets up fixtures for measurements, tests the retrieval of recent measurements from the database, and tests the limit functionality for recent measurements retrieval.</p>
+<h2 style="margin-left: 60px; color: #333366;">Summary of test_reports.py</h2>
+<p style="margin-left: 60px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\tests\database\test_reports.py</p>
+<p style="margin-left: 60px;"><b>summary:</b> **What it does**: Unit tests for retrieving reports and measurements from a MongoDB database.
+
+        **How it does it**: Sets up a mock MongoDB database, creates test data for measurements and a report, inserts them into the database, and then tests the function `get_reports_and_measurements` to ensure it returns the correct data.</p>
+</details>
+<h2 style="margin-left: 40px; color: #333366;">Summary of test_teams.py</h2>
+<p style="margin-left: 40px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\tests\destinations\test_teams.py</p>
+<p style="margin-left: 40px;"><b>summary:</b> **What it does**: Contains unit tests for sending notifications to Microsoft Teams, including testing message building and sending notifications.
+
+        **How it does it**: Utilizes mock objects to test sending notifications to both valid and invalid webhooks, as well as testing message building for different scenarios such as changed status and unknown status.</p>
+<h2 style="margin-left: 40px; color: #333366;">Summary of test_metric_notification_data.py</h2>
+<p style="margin-left: 40px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\tests\models\test_metric_notification_data.py</p>
+<p style="margin-left: 40px;"><b>summary:</b> **What it does**: Contains unit tests for the metric notification data model.
+
+        **How it does it**: Defines test cases to check if the new status is set correctly based on metric measurements and subject type.</p>
+<h2 style="margin-left: 40px; color: #333366;">Summary of test_notifier.py</h2>
+<p style="margin-left: 40px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\tests\notifier\test_notifier.py</p>
+<p style="margin-left: 40px;"><b>summary:</b> **What it does**: Contains unit tests for the Quality-time notifier, covering methods related to recording health checks, notifying users, and retrieving the most recent measurement timestamp.
+
+        **Specifics**:
+        - Tests the method for retrieving the most recent measurement timestamp with and without measurements.
+        - Tests the method for recording health checks, including successful and failed scenarios.
+        - Tests the notification method, covering cases where notifications are sent based on changes in metrics and report configurations.
+        - Tests scenarios where notifications are not sent due to specific conditions, such as no new red metrics or</p>
+<h2 style="margin-left: 40px; color: #333366;">Summary of test_notification_strategy.py</h2>
+<p style="margin-left: 40px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\tests\strategies\test_notification_strategy.py</p>
+<p style="margin-left: 40px;"><b>summary:</b> **What it does**: Contains unit tests for notification strategies, specifically focusing on scenarios related to red metrics and notifications.
+
+        **How it does it**: Sets up test data, creates metrics, and tests various scenarios such as no reports, no red metrics, old red metrics, new red metrics, status changes, and multiple reports with the same destination.</p>
+<h2 style="margin-left: 40px; color: #333366;">Summary of tests</h2>
+<p style="margin-left: 40px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\tests</p>
+<p style="margin-left: 40px;"><b>summary:</b> **What it does**: The "tests" component provides a way to test different parts of the codebase to ensure they work correctly.
+
+**How it does it**: It includes predefined scenarios and checks to verify that specific functions, like creating a report or managing notifications, behave as expected. The tests help identify and fix any issues in the code to ensure the software runs smoothly.</p>
+<details class="summary-detail" style="margin-left: 40px;">
+  <summary class="summary-title" style="font-weight: bold; cursor: pointer;">Summaries used as input</summary>
+<h2 style="margin-left: 60px; color: #333366;">Summary of fixtures.py</h2>
+<p style="margin-left: 60px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\tests\fixtures.py</p>
+<p style="margin-left: 60px;"><b>summary:</b> **What it does**: Provides fixtures for tests, specifically creating a fake report with specified details.
+
+        **How it does it**: Defines constants for metric ID, notification destination ID, and subject ID. Creates a report dictionary with a title, subjects, metrics, notification destinations, and a flag for deletion if specified.</p>
+<h2 style="margin-left: 60px; color: #333366;">Summary of test_fixtures.py</h2>
+<p style="margin-left: 60px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\tests\test_fixtures.py</p>
+<p style="margin-left: 60px;"><b>summary:</b> **What it does**: Contains unit tests for the `create_report` fixture function.
+
+        **How it does it**: Tests the creation of a report with and without the `deleted` flag, asserting specific properties of the generated report.</p>
+<h2 style="margin-left: 60px; color: #333366;">Summary of test_quality_time_notifier.py</h2>
+<p style="margin-left: 60px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\tests\test_quality_time_notifier.py</p>
+<p style="margin-left: 60px;"><b>summary:</b> **What it does**: Unit tests for the notifier main script, specifically testing the default logging level and the ability to change the logging level.
+
+        **How it does it**: Uses unittest and mocks to test the behavior of the start_notifications function in the quality_time_notifier module.</p>
+</details>
+</details>
+<h2 style="margin-left: 20px; color: #333366;">Summary of notifier</h2>
+<p style="margin-left: 20px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier</p>
+<p style="margin-left: 20px;"><b>summary:</b> **What it does**: The "notifier" component sets up a Docker image for a Python application that sends notifications about quality metrics. It manages dependencies, configurations, and tools for the notifier project.
+
+**How it does it**: 
+- Compiles the application with necessary dependencies.
+- Installs required Python packages.
+- Configures the runtime image with necessary settings.
+- Copies compiled dependencies and application code.
+- Defines a health check to ensure the application runs correctly.
+- Specifies the command to run the notifier application.
+
+Overall, the notifier component ensures the Python application is properly set up to send notifications and manages its dependencies and configurations.</p>
+<details class="summary-detail" style="margin-left: 20px;">
+  <summary class="summary-title" style="font-weight: bold; cursor: pointer;">Summaries used as input</summary>
+<h2 style="margin-left: 40px; color: #333366;">Summary of Dockerfile</h2>
+<p style="margin-left: 40px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\Dockerfile</p>
+<p style="margin-left: 40px;"><b>summary:</b> **What it does**: Sets up a Docker image for a Python notifier application that sends notifications related to quality metrics.
+
+        **How it does it**: 
+        - Sets up a build image to compile the application with necessary dependencies.
+        - Installs required Python packages from specified requirements files.
+        - Sets up a runtime image with necessary configurations and permissions.
+        - Copies compiled dependencies and application code into the runtime image.
+        - Defines a health check to ensure the application is running correctly.
+        - Sets the command to run the notifier application.</p>
+<h2 style="margin-left: 40px; color: #333366;">Summary of pyproject.toml</h2>
+<p style="margin-left: 40px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\pyproject.toml</p>
+<p style="margin-left: 40px;"><b>summary:</b> **What it does**: Manages dependencies, optional dependencies, and tools configurations for the "notifier" project.
+
+**Dependencies**: aiohttp version 3.9.1 and pymsteams version 0.2.2.
+
+**Optional Dependencies**:
+- Development: coverage, mongomock, pip, pipx, pip-tools, pydantic, unittest-xml-reporting.
+- Tools: bandit, mypy, pip-audit, ruff, safety, vulture.
+
+**Mypy Configuration**:
+- Various settings for mypy including ignoring missing</p>
+<h2 style="margin-left: 40px; color: #333366;">Summary of README.md</h2>
+<p style="margin-left: 40px;"><b>path:</b> C:\Users\jeelb\OneDrive - Stichting ICTU\Documenten\Code genAI\quality-time\components\notifier\README.md</p>
+<p style="margin-left: 40px;"><b>summary:</b> **What it does**: This code file serves as a reference to the Quality-time notifier and directs users to the software documentation for more information.</p>
+</details>
+</details>
+</div></body></html>
