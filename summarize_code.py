@@ -14,6 +14,7 @@ from src.llm import llm_generate_summary, llm_summarize_summary
 from src.prompt_templates import code_template, summaries_template, map_template, reduce_template
 from src.chat_prompt_templates import chat_code_summary_template, chat_sum_summary_template
 from src.skip_dir import skip_file, skip_dir
+from src.to_html import summary_to_html_enhanced
 
 
 with open('config/config.yml', 'r', encoding='utf8') as ymlfile:
@@ -51,7 +52,6 @@ def summarize_file(filename: Path, hash_register: HashRegister) -> Summary:
         hash_register.set(str(filename), contents, summary_text)
     else:
         summary_text = hash_register.get(str(filename))
-    print(summary_text)
     return Summary(path=str(filename), summary=summary_text)
 
 
@@ -70,7 +70,6 @@ def summarize_summaries(
             hash_register.set(key, str(summary_texts), summary_text)
         else:
             summary_text = hash_register.get(key)
-        print(summary_text)
     except ValueError:
         print(path)
         print(summaries)
@@ -84,7 +83,7 @@ def summarize_path(path: Path, hash_register: HashRegister) -> Summary:
     dirs = [subpath for subpath in path.iterdir() if subpath.is_dir() and not skip_dir(subpath)]
     summaries = [summarize_path(subpath, hash_register) for subpath in dirs]
     summaries.append(summarize_files(path, hash_register))
-    return summarize_summaries(path, summaries, hash_register)
+    return summaries[0] if len(summaries) == 1 else summarize_summaries(path, summaries, hash_register)
 
 
 def add_info_to_dict(summary, time):
@@ -116,9 +115,10 @@ if __name__ == "__main__":
         save_hashes(summary_cache, hash_register)
         end = timeit.default_timer()
         time =  f"{round((end-start)/60)} minutes" if (end-start) > 100 else f"{round(end-start)} seconds"
-        json_data = add_info_to_dict(summary, time)
-        write_json(json_data)
-        pprint.pprint(json_data, width=160)
+        summaries_data = add_info_to_dict(summary, time)
+        #write_json(json_data)
+        #pprint.pprint(json_data, width=160)
+        print(summary_to_html_enhanced(summaries_data))
     except FileNotFoundError:
         print(f"Path {sys.argv[1]} does not exist. Please provide valid path.")
     except OSError:
