@@ -5,7 +5,7 @@ from pathlib import Path
 from src.skip_dir import skip_dir, skip_file
 
 
-def number_of_files(dir_path):
+def number_of_files(dir_path:Path) -> int:
     """Count number of files in a directory"""
     count = 0
     for path in os.scandir(dir_path):
@@ -18,7 +18,7 @@ def number_of_files(dir_path):
     return count
 
 
-def max_num_tokens(path, base_max_tokens):
+def max_num_tokens(path: Path, base_max_tokens) -> int:
     """Calculate the max numer of tokens usable in the output, takes base tokens and number of files as int input"""
     number_of_files_in_dir = number_of_files(path)
     max_num_tokens = math.ceil(base_max_tokens + math.sqrt(number_of_files_in_dir * 25))
