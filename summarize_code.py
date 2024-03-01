@@ -115,7 +115,7 @@ if __name__ == "__main__":
         write_to_html_file(html_str, 'metrics/summary_output.html')
     except FileNotFoundError:
         print(f"Path {sys.argv[1]} does not exist. Please provide valid path.")
-    except OSError:
-        print(f"Permission Denied. Please grant the necessary permissions.")
-    except Exception as e:
-        print(f"Unexpected error occurred: {e}")
+    # except OSError:
+    #     print(f"Permission Denied. Please grant the necessary permissions.")
+    # except Exception as e:
+    #     print(f"Unexpected error occurred: {e}")
