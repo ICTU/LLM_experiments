@@ -13,7 +13,7 @@ from src.llm import llm_generate_summary, llm_summarize_summary
 from src.prompt_templates import code_template, summaries_template, map_template, reduce_template
 from src.chat_prompt_templates import chat_code_summary_template, chat_sum_summary_template, one_shot_code_summary_template, one_shot_sum_summary_template
 from src.skip_dir import skip_file, skip_dir
-from src.to_html import summary_to_html_enhanced
+from src.to_html import summary_to_html_enhanced, write_to_html_file
 from src.classes import Summary, Configurations
 
 
@@ -106,10 +106,13 @@ if __name__ == "__main__":
         save_hashes(summary_cache, hash_register)
         end = timeit.default_timer()
         time =  f"{round((end-start)/60)} minutes" if (end-start) > 100 else f"{round(end-start)} seconds"
+        #add configuration/details data
         summaries_data = add_info_to_dict(summary, time)
-        # write_json(summaries_data)
-        # pprint.pprint(summaries_data, width=160)
-        print(summary_to_html_enhanced(summaries_data))
+        #write to json file
+        write_json(summaries_data)
+        #generate and write to html file
+        html_str = summary_to_html_enhanced(summaries_data)
+        write_to_html_file(html_str, 'metrics/summary_output.html')
     except FileNotFoundError:
         print(f"Path {sys.argv[1]} does not exist. Please provide valid path.")
     except OSError:
