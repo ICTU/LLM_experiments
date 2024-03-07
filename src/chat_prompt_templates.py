@@ -61,9 +61,10 @@ one_shot_sum_summary_template = ChatPromptTemplate.from_messages(
 
 #dictionaries containing examples for one shot prompt
 one_shot_code_example = {
-    'answer': """**What it does**: provides a React component that lets the user select a subject type for a subject in a quality report.
+    'answer': """
+    **What it does**: provides a React component that lets the user select a subject type for a subject in a quality report.
 
-        **How it does it**: wraps the widget for single choice inputs with the subject types available in the data model.""",
+    **How it does it**: wraps the widget for single choice inputs with the subject types available in the data model.""",
     'file_name': 'SubjectType.js',
     'code':"""import React, { useContext } from 'react';
 import { Header } from '../semantic_ui_react_wrappers';
@@ -97,7 +98,8 @@ export function SubjectType({ subject_type, set_value }) {
 }
 
 one_shot_sum_example = {
-    'answer': """**What it does**: provides the user interface of Quality-time that users can access in their browser. The user interface allows users to create and configure Quality-reports and view the current and historical status of metrics.
+    'answer': """
+    **What it does**: provides the user interface of Quality-time that users can access in their browser. The user interface allows users to create and configure Quality-reports and view the current and historical status of metrics.
 
     **How it does it**: bundles the React components into a runtime Docker component that serves the bundled Javascript and HTML for the Quality-time application.""",
     'component_name': 'frontend',

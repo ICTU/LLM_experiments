@@ -3,3 +3,4 @@
 __pycache__/
 .env
 metrics/
+example_files/

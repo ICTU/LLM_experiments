@@ -6,7 +6,6 @@ import timeit
 import yaml
 import box
 from pathlib import Path
-from typing import TypedDict
 
 from src.add_to_JSON import write_json
 from src.hash_register import load_hashes, save_hashes, HashRegister
@@ -14,30 +13,12 @@ from src.llm import llm_generate_summary, llm_summarize_summary
 from src.prompt_templates import code_template, summaries_template, map_template, reduce_template
 from src.chat_prompt_templates import chat_code_summary_template, chat_sum_summary_template, one_shot_code_summary_template, one_shot_sum_summary_template
 from src.skip_dir import skip_file, skip_dir
-from src.to_html import summary_to_html_enhanced
+from src.to_html import summary_to_html_enhanced, write_to_html_file
+from src.classes import Summary, Configurations
 
 
 with open('config/config.yml', 'r', encoding='utf8') as ymlfile:
     cfg = box.Box(yaml.safe_load(ymlfile))
-
-class Summary(TypedDict):
-    """A summary of a code file, component, application, or complete system."""
-
-    path: str
-    summary: str
-    summaries: list[Summary]
-    details: Configurations
-    
-
-class Configurations(TypedDict):
-    """Models and application configurations"""
-
-    prompts: dict
-    time: str
-    max_base_tokens_code: int
-    max_base_tokens_summaries: int
-    model_type: str
-    model_name: str
 
 
 def summarize_files(path: Path, hash_register: HashRegister) -> Summary:
@@ -125,13 +106,16 @@ if __name__ == "__main__":
         save_hashes(summary_cache, hash_register)
         end = timeit.default_timer()
         time =  f"{round((end-start)/60)} minutes" if (end-start) > 100 else f"{round(end-start)} seconds"
+        #add configuration/details data
         summaries_data = add_info_to_dict(summary, time)
+        #write to json file
         write_json(summaries_data)
-        pprint.pprint(summaries_data, width=160)
-        print(summary_to_html_enhanced(summaries_data))
+        #generate and write to html file
+        html_str = summary_to_html_enhanced(summaries_data)
+        write_to_html_file(html_str, 'metrics/summary_output.html')
     except FileNotFoundError:
         print(f"Path {sys.argv[1]} does not exist. Please provide valid path.")
-    except OSError:
-        print(f"Permission Denied. Please grant the necessary permissions.")
-    except Exception as e:
-        print(f"Unexpected error occurred: {e}")
+    # except OSError:
+    #     print(f"Permission Denied. Please grant the necessary permissions.")
+    # except Exception as e:
+    #     print(f"Unexpected error occurred: {e}")

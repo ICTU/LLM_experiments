@@ -27,7 +27,8 @@ def llm_generate_summary(file_path: Path, code: str) -> str:
         llm = create_chat_llm(max_tokens=max_tokens)
         prompt = one_shot_code_summary_prompt(file_path.name, code)
     if is_prompt_too_big(llm, prompt):
-        output = chain_summarize_summaries(code)  # FIXME: What is the prompt used here?
+        output = chain_summarize_summaries(code)
+        return output
     else:
         output = llm.invoke(prompt)
     return output.content #use if llm is not chat: .strip()
@@ -43,7 +44,8 @@ def llm_summarize_summary(component_path: Path, summaries: list[str]) -> str:
         llm = create_chat_llm(max_tokens=max_tokens)
         prompt = one_shot_sum_summary_prompt(component_path.name, summaries)
     if is_prompt_too_big(llm, prompt):
-        output = chain_summarize_summaries(summaries)  # FIXME: What is the prompt used here?
+        output = chain_summarize_summaries(summaries)
+        return output
     else:
         output = llm.invoke(prompt)
     return output.content  #use if llm is not chat: .strip()
@@ -54,7 +56,7 @@ def create_llm(max_tokens):
     return OpenAI(model=cfg.MODEL_NAME, temperature=cfg.TEMPERATURE, max_tokens=max_tokens)
 
 def create_chat_llm(max_tokens):
-    """Create an completions LLM client."""
+    """Create a chat LLM client."""
     return ChatOpenAI(model=cfg.MODEL_CHAT_NAME, temperature=cfg.TEMPERATURE, max_tokens=max_tokens)
 
 def is_prompt_too_big(llm, prompt: str) -> bool:
