@@ -16,6 +16,7 @@ load_dotenv()
 # with open('config/config.yml', 'r', encoding='utf8') as ymlfile:
 #     cfg = box.Box(yaml.safe_load(ymlfile))
 
+
 #prompt template for code summary
 architecture_task_template = ChatPromptTemplate.from_messages(
     [
@@ -23,14 +24,14 @@ architecture_task_template = ChatPromptTemplate.from_messages(
         ("user", """"
 Instructions:
 
-The you are given a large nested json file that provides summaries of a codebase on multiple levels. The highest level is a summary of the entire codebase, followed by summaries of the directories/components it contains. On the lowest level it provides summaries of individual files.
-You are also given a template for a software architecture document. First please analyse both files completly before forming your answers. 
+The you are given a large nested json file containing summaries of a codebase on multiple levels. The highest level is a summary of the entire codebase, followed by summaries of the directories/components it contains. On the lowest level it provides summaries of individual files.
+You are also given a template for a software architecture document. First, please analyse both files completely before forming your answers. 
 
 Objective:
          
-Please fill in the following sections of the architecture document in Dutch. Return the completed sections with a complementary description. 
+Please fill in the following sections of the architecture document in Dutch. 
 
-document sections:
+Document sections:
 ```
 - 1 Managementsamenvatting
 - 3 Ontwerpbeslissingen
@@ -38,7 +39,7 @@ document sections:
 ```
 
 
-architecture document:```{document}```
+Architecture document:```{document}```
 
 
 json_nested_summaries:```{json_file}```
