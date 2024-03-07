@@ -1,15 +1,20 @@
+## Model settings
 BASE_MAX_TOKENS_CODE: 100
 BASE_MAX_TOKENS_SUM: 130
 MAX_TOKENS_CODE: 90
 MAX_TOKENS_SUM: 160
 MAX_TOKENS_CHAIN: 512
 TEMPERATURE: 0
-DIRECTORY_PATH: "C:/Users/jeelb/OneDrive - Stichting ICTU/Documenten/Code genAI/quality-time/components/notifier/src/notifier/notifier.py"
+CONTEXT_WINDOW: 32000
+CHUNK_SIZE: 8000
 MODEL_TYPE: "chat"
 MODEL_NAME: "gpt-3.5-turbo-instruct"
 MODEL_CHAT_NAME: "gpt-3.5-turbo-0125"
+
+## File paths
+DIRECTORY_PATH: "C:/Users/jeelb/OneDrive - Stichting ICTU/Documenten/Code genAI/quality-time/components/notifier/src/notifier/notifier.py"
 JSON_FILE_NAME: "metrics/sum_arch_test.json"
 HTML_FILE_NAME: "metrics/summary_arch_test.html"
+ARCHITECTURE_DOC: "example_files/ICTU-Template-Software-architectuurdocument.docx"
+ARCHITECTURE_JSON: "metrics/sum_arch_test.json"
 JSON_EXPERIMENT_NAME: "summaries_settings_GTP3.5-turbo0125-100-130-1shot" #format: summaries_settings_MODELVERSION-CODE_TOKENS-SUM_TOKENS
-CONTEXT_WINDOW: 32000
-CHUNK_SIZE: 8000
