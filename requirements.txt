@@ -1,3 +1,4 @@
+docx2txt
 langchain
 langchain-openai
 python-dotenv

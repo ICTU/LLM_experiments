@@ -56,7 +56,7 @@ def create_llm(max_tokens):
     return OpenAI(model=cfg.MODEL_NAME, temperature=cfg.TEMPERATURE, max_tokens=max_tokens)
 
 def create_chat_llm(max_tokens):
-    """Create an completions LLM client."""
+    """Create a chat LLM client."""
     return ChatOpenAI(model=cfg.MODEL_CHAT_NAME, temperature=cfg.TEMPERATURE, max_tokens=max_tokens)
 
 def is_prompt_too_big(llm, prompt: str) -> bool:
