@@ -112,7 +112,7 @@ if __name__ == "__main__":
         write_json(summaries_data)
         #generate and write to html file
         html_str = summary_to_html_enhanced(summaries_data)
-        write_to_html_file(html_str, 'metrics/summary_output.html')
+        write_to_html_file(html_str, cfg.HTML_FILE_NAME)
     except FileNotFoundError:
         print(f"Path {sys.argv[1]} does not exist. Please provide valid path.")
     # except OSError:
