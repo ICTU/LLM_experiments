@@ -16,6 +16,7 @@ def fill_user_story_prompt(doc_path, use_case):
         return user_story_prompt(FO_doc=doc_str)
 
 def generate_user_stories(doc_path, use_case):
+    """Generates user stories based on an input document"""
     llm = create_llm()
     prompt = fill_user_story_prompt(doc_path=doc_path, use_case=use_case)
     return llm.invoke(prompt)
