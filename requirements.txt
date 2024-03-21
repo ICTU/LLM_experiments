@@ -1,5 +1,7 @@
 docx2txt
 langchain
+langchainhub
 langchain-openai
+langsmith
 python-dotenv
 python-box
