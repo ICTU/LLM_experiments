@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+import pprint
 from langchain.chains import LLMChain
 from langchain_openai import ChatOpenAI
 from langchain.chains import SequentialChain
@@ -7,6 +8,7 @@ from chain_prompts import user_story_prompt, criteria_prompt, evaluate_prompt, s
 
 #import api keys for OpenAI en Langsmith
 load_dotenv()
+
 
 llm = ChatOpenAI(
     model="gpt-3.5-turbo-16k",
@@ -59,7 +61,7 @@ def generate_user_stories(fo_summary, use_case, no_stories, user_stories_list=[]
         )['criteria'])
     return user_stories_list
         
-print(generate_user_stories(
+pprint.pprint(generate_user_stories(
     fo_summary = """De nieuwe applicatie, werktitel “Inkooptool ICTU”, zal op termijn meerdere inkoopprocessen ondersteunen zoals inhuur professionals, inhuur uitzendkrachten, inkoop hardware en enkelvoudige en meervoudige onderhandse uitvragen. Voor nu is voorzien dat elk van de inkoopprocessen op maat ontwikkelde functionaliteit nodig zal hebben binnen de inkooptool, maar dat de overlap groot genoeg is om veel functionalteit te kunnen hergebruiken tussen de inkoopprocssen.
 Dit globaal functioneel ontwerp beschrijft de hoofdfuncties van de “Inkooptool ICTU”. Deze hoofdfuncties zijn:
 A.	Aanvraag
@@ -93,5 +95,5 @@ b)	Een inkoper wijst de aanvraag aan een sluitingsdatum en -tijd toe (het systee
 3)	De aanvrager verstuurt de aanvraag (met daarin de gekozen datum en tijd van het afstemmingsoverleg (indien van toepassing), de sluitingsdatum en -tijd, de kerngegevens en de aanvraag professional als bijlage) naar de raampartijen (van het perceel van de aanvraag) en markeert daarmee de aanvraag als aanvraag-verzonden. Het systeem noteert de verzenddatum.
 a)	Het systeem controleert voor verzenden dat de datum en tijd van het afstemmingsoverleg minimaal één werkdag in de toekomst ligt en dat de sluitingsdatum en -tijd minimaal vier werkdagen later is dan het afstemmingsoverleg indien van toepassing, of in andere gevallen de datum van uitvraag. Als de datums hier niet aan voldoen verstuurt het systeem de aanvraag niet en waarschuwt de gebruiker dat niet aan de voorwaarden wordt voldaan.	
  """,
- no_stories=4
+ no_stories=3
 ))
