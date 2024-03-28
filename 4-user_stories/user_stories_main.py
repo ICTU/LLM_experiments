@@ -1,3 +1,4 @@
+from __future__ import annotations
 import sys
 from typing import TypedDict
 from pathlib import Path
@@ -7,6 +8,21 @@ from langchain.cache import SQLiteCache
 from src.summarize_docs import summarize_docs_simple, write_to_file
 from sequence_chain import generate_user_stories
 from docs.use_cases import use_cases_inkoop
+
+class User_stories(TypedDict):
+     
+    fo_doc:Path
+    use_cases:dict
+    user_stories:list[User_story]
+     
+
+class User_story(TypedDict):
+     
+    use_case_key:str
+    title:str
+    user_story:str
+    acceptance_criteria:list
+    open_issues:list
 
 
 def user_stories_main(fo_doc_path:Path, use_cases:dict, no_stories:int, results_path):
