@@ -1,10 +1,8 @@
 from langchain_community.document_loaders import Docx2txtLoader
 from langchain_core.prompts import ChatPromptTemplate
 from pathlib import Path
-from src.llm import create_llm
-from docs.use_cases import use_cases
 
-summary_path = "doc_summaries.txt"
+from src.llm import create_llm
 
 
 def read_doc_as_str(path:Path):
@@ -58,8 +56,9 @@ def doc_summary_prompt_simple(fo_doc:str):
     return doc_summary_template_simple.format_messages(functional_design=fo_doc)
 
 
-def summarize_docs(fo_doc:Path, sad_doc:Path, use_case):
+def summarize_docs(fo_doc:Path, sad_doc:Path, use_case, summary_path:Path):
     """Summarizes project documents with regard to a specific use case"""
+    print("Summarizing design documents...")
     fo_text = read_doc_as_str(fo_doc)
     sad_text = read_doc_as_str(sad_doc)
     llm = create_llm()
@@ -68,14 +67,9 @@ def summarize_docs(fo_doc:Path, sad_doc:Path, use_case):
     return write_to_file(summary.content, file_path=summary_path), print(summary.content)
 
 
-def summarize_docs_simple(fo_doc:Path):
+def summarize_docs_simple(fo_doc_path:Path):
     """Summarizes project fo document"""
-    fo_text = read_doc_as_str(fo_doc)
+    fo_text = read_doc_as_str(fo_doc_path)
     llm = create_llm()
     prompt = doc_summary_prompt_simple(fo_text)
-    summary = llm.invoke(prompt)
-    return write_to_file(summary.content, file_path=summary_path), print(summary.content)
-
-#summarize_docs(fo_doc="docs/Globaal-Functioneel-Ontwerp InkoopDB.docx", sad_doc="docs/SAD InhuurDB.docx", use_case=use_cases["UC1.3"])
-
-#summarize_docs_simple(fo_doc="docs/Globaal-Functioneel-Ontwerp InkoopDB.docx")
+    return llm.invoke(prompt).content 

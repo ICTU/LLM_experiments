@@ -1,7 +1,7 @@
 docx2txt
-langchain
+langchain == 0.1.4
 langchainhub
-langchain-openai
+langchain-openai == 0.1.1
 langsmith
 python-dotenv
 python-box
