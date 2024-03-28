@@ -9,6 +9,7 @@ from src.summarize_docs import summarize_docs_simple, write_to_file
 from sequence_chain import generate_user_stories
 from docs.use_cases import use_cases_inkoop
 
+
 class User_stories(TypedDict):
      
     fo_doc:Path
