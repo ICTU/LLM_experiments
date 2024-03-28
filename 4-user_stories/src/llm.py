@@ -5,12 +5,12 @@ from langchain_openai import ChatOpenAI
 #load API key from .env
 load_dotenv()
 
-model = "gpt-3.5-turbo-0125"
+model = "gpt-4-0125-preview"
 context_window = 16385
 
 def create_llm(max_tokens=None):
     """initiates an OpenAI chat completions llm"""
-    return ChatOpenAI(model=model, temperature=0.2, max_tokens=max_tokens)
+    return ChatOpenAI(model=model, temperature=0.1, max_tokens=max_tokens)
 
 def get_num_tokens(prompt) -> int:
     """Return the number of tokens in prompt or output."""

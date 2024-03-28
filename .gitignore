@@ -1,3 +1,4 @@
+.langchain.db
 .summary_cache.json
 .venv/
 __pycache__/
