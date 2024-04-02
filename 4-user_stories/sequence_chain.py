@@ -5,11 +5,11 @@ from langchain_openai import ChatOpenAI
 from langchain.chains import SequentialChain
 from langchain.prompts import PromptTemplate
 
-from src.chain_prompts import user_story_prompt, criteria_prompt, evaluate_prompt
+from src.chain_prompts import user_story_prompt, criteria_prompt
 from docs.doc_summaries import fo_summary_inkoop
 from docs.use_cases import use_cases_inkoop
 from src.to_dutch import translate_to_dutch
-from src.evaluate import evaluate_user_stories
+from src.evaluate import evaluate_prompt_po, evaluate_prompt_dev
 
 #import api keys for OpenAI en Langsmith
 load_dotenv()
@@ -30,8 +30,8 @@ def create_chain(llm, prompt:PromptTemplate, output_key:str):
     )
 
 
-def simple_seq():
-    """initializes a simple sequence of llm chains"""
+def generate_sequence():
+    """initializes sequence of llm chains to generate a user stories"""
     chain1 = create_chain(llm, user_story_prompt(), "user_stories")
     chain2 = create_chain(llm, criteria_prompt(), "criteria")
     return SequentialChain(
@@ -45,19 +45,41 @@ def simple_seq():
 def generate_user_stories(fo_summary:str, use_case:str, no_stories:int, user_stories_list=[]):
     """Generate a list of user stories with acceptance criteria for use_case"""
     print("Generating user stories...")
-    seq_chain = simple_seq()
+    seq_chain = generate_sequence()
     while len(user_stories_list) < no_stories:
-        user_stories_list.append(seq_chain.invoke(
+        user_story = seq_chain.invoke(
             {
                 "functional_design": fo_summary,
                 "use_case": use_case,
                 "user_stories_list": user_stories_list
             }
-        )['criteria'])
-    #evaluate user stories list
-    print("Evaluating user stories...")
-    evaluate_user_stories(input=user_stories_list, fo_summary=fo_summary, use_case=use_case)
+        )['criteria']
+        user_stories_list.append(user_story)
 
-    #translate user stories to dutch
-    print("Translating user stories...")
-    return translate_to_dutch(user_stories_list)
+    return user_stories_list
+
+def evaluate_sequence():
+    """initializes a simple sequence of llm chains"""
+    chain1 = create_chain(llm, evaluate_prompt_po(), "po_comments")
+    chain2 = create_chain(llm, evaluate_prompt_dev(), "dev_comments")
+    return SequentialChain(
+        chains=[chain1, chain2],
+        input_variables=["functional_design", "use_case", "user_stories_list"],
+        output_variables=["dev_comments"],
+        verbose=True
+    )
+
+def evaluate_user_stories(fo_summary:str, use_case:str, user_stories_list=list):
+    """Evaluate the list of generated user stories"""
+    print("Evaluating user stories...")
+    seq_chain = evaluate_sequence()
+    return seq_chain.invoke(
+            {
+                "functional_design": fo_summary,
+                "use_case": use_case,
+                "user_stories_list": user_stories_list
+            }
+            )['dev_comments']
+
+
+
