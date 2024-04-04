@@ -1,15 +1,13 @@
 from dotenv import load_dotenv
-import pprint
 from langchain.chains import LLMChain
 from langchain_openai import ChatOpenAI
 from langchain.chains import SequentialChain
 from langchain.prompts import PromptTemplate
 
 from src.chain_prompts import user_story_prompt, criteria_prompt
-from docs.doc_summaries import fo_summary_inkoop
-from docs.use_cases import use_cases_inkoop
 from src.to_dutch import translate_to_dutch
 from src.evaluate import evaluate_prompt_po, evaluate_prompt_dev
+from src.output_parser import create_parser_chain
 
 #import api keys for OpenAI en Langsmith
 load_dotenv()
@@ -41,6 +39,13 @@ def generate_sequence():
         verbose=True
     )
 
+def parse_output(fo_summary:str, use_case:str, user_stories_list=list):
+    chain = create_parser_chain(llm=llm)
+    return chain.invoke({
+        "functional_design": fo_summary,
+        "use_case": use_case,
+        "user_stories_list": user_stories_list}
+        )["user_story_json"]
 
 def generate_user_stories(fo_summary:str, use_case:str, no_stories:int, user_stories_list=[]):
     """Generate a list of user stories with acceptance criteria for use_case"""
@@ -55,8 +60,9 @@ def generate_user_stories(fo_summary:str, use_case:str, no_stories:int, user_sto
             }
         )['criteria']
         user_stories_list.append(user_story)
-
-    return user_stories_list
+    output = parse_output(fo_summary=fo_summary, use_case=use_case, user_stories_list=user_stories_list)
+    print(output)
+    return output
 
 def evaluate_sequence():
     """initializes a simple sequence of llm chains"""
@@ -69,7 +75,7 @@ def evaluate_sequence():
         verbose=True
     )
 
-def evaluate_user_stories(fo_summary:str, use_case:str, user_stories_list=list):
+def evaluate_user_stories(fo_summary:str, use_case:str, user_stories_list=dict):
     """Evaluate the list of generated user stories"""
     print("Evaluating user stories...")
     seq_chain = evaluate_sequence()

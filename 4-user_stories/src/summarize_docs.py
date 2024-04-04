@@ -2,7 +2,7 @@ from langchain_community.document_loaders import Docx2txtLoader
 from langchain_core.prompts import ChatPromptTemplate
 from pathlib import Path
 
-from src.llm import create_llm
+from .llm import create_llm
 
 
 def read_doc_as_str(path:Path):
