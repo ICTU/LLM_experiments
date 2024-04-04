@@ -2,6 +2,7 @@ import fitz #PyMuPDF
 import pandas as pd
 import logging
 from pathlib import Path
+from summarize_docs import write_to_file
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -17,7 +18,8 @@ def reformat_df_for_llm(dataframe:pd.DataFrame, use_case_id:int):
                 row_str += f"{column}: {row[column]},"
             f.write(row_str + "\n")
             logging.info(f"Use case {use_case_id} saved to {output_file}.")
-    return dataframe
+
+    return write_to_file(text=dataframe, file_path=output_file)
 
 def extract_use_cases_from_pdf(path:Path):
     """Extract use case info from tables in pdf to key-value pairs in txt doc"""
@@ -38,4 +40,4 @@ def extract_use_cases_from_pdf(path:Path):
     return logging.info(f"Total use cases extracted from {path}: {counter}")
 
 
-extract_use_cases_from_pdf(path="docs/Globaal-Functioneel-Ontwerp InkoopDB.pdf")
+extract_use_cases_from_pdf(path="../docs/Globaal-Functioneel-Ontwerp InkoopDB.pdf")

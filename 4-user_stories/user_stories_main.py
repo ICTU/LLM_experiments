@@ -6,26 +6,9 @@ from langchain.globals import set_llm_cache
 from langchain.cache import SQLiteCache
 
 from src.summarize_docs import summarize_docs_simple, write_to_file
-from sequence_chain import generate_user_stories, evaluate_user_stories
+from src.sequence_chain import generate_user_stories, evaluate_user_stories
 from docs.use_cases import use_cases_inkoop
 from src.add_to_JSON import write_json
-
-
-class User_stories(TypedDict):
-     
-    fo_doc:Path
-    use_cases:dict
-    user_stories:dict
-    comments:str
-     
-
-class User_story(TypedDict):
-     
-    use_case_key:str
-    description:str
-    user_story:str
-    acceptance_criteria:list
-    open_issues:list
 
 
 class User_stories(TypedDict):
@@ -59,7 +42,6 @@ def user_stories_main(fo_doc_path:Path, use_cases:dict, no_stories:int, results_
 
     return print(f"completed user stories and feedback, printed to {results_path}")
 
-fo_doc_path = "docs/Globaal-Functioneel-Ontwerp InkoopDB.docx"
 
 if __name__ == "__main__":
         set_llm_cache(SQLiteCache(database_path=".langchain.db"))
