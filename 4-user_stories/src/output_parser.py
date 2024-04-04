@@ -8,10 +8,9 @@ from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain.chains import LLMChain
 
-from .llm import create_llm
-
 
 load_dotenv()
+
 
 class User_stories(TypedDict):
      
@@ -29,14 +28,14 @@ class User_story(BaseModel):
     acceptance_criteria:list = Field(description="numbered list of acceptance criteria")
     dependencies:list[str] = Field(description="list of user story identifiers that need to be implemented before this user story.")
 
+
 template = """
     You are given an overview of a functional design (1) which describes the functional operation of an application. This includes a description of who can do what with the application, in the form of use cases. You given the description of a specific use case (2).
     You are also given a list of existing user stories (3) and a a user story format (4) to structure your answer.
          
     Instructions:
-    - using the provided context (1) form a new user story for the use case (2)
-    - avoid overlap with the existing user stories (3) (if the list is empty, provide the most basic user story)
-    - use the provided user story format (4)
+    - using the provided context (1 & 2) format the list of user stories (3) using the provided format (4)
+    - give your answers in dutch
          
     1. Functional design: ```{functional_design}```
         
