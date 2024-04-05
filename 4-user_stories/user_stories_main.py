@@ -9,6 +9,7 @@ from src.summarize_docs import summarize_docs_simple, write_to_file
 from src.sequence_chain import generate_user_stories, evaluate_user_stories
 from docs.use_cases import use_cases_inkoop
 from src.add_to_JSON import write_json
+from src.evaluate import generate_comments
 
 
 class User_stories(TypedDict):
@@ -16,6 +17,8 @@ class User_stories(TypedDict):
     fo_doc:Path
     use_cases:dict
     user_stories:list[User_story]
+    comments_po:str
+    comments_dev:str
      
 
 class User_story(TypedDict):
@@ -34,10 +37,18 @@ def user_stories_main(fo_doc_path:Path, use_cases:dict, no_stories:int, results_
 
     for key, value in use_cases.items():
         user_stories_dict = User_stories(fo_doc=fo_doc_path, use_cases=use_cases, user_stories={}, comments="")
+
         user_stories = generate_user_stories(fo_summary=fo_summary_text, use_case=value, no_stories=no_stories)
         user_stories_dict['user_stories'] = user_stories
-        comments = evaluate_user_stories(fo_summary=fo_summary_text, use_case=value, user_stories_list=user_stories)
-        user_stories_dict['comments'] = comments
+
+        comments_po = generate_comments(fo_summary=fo_summary_text, use_case=value, user_stories=user_stories, role="po")
+        user_stories_dict['comments_po'] = comments_po
+
+        comments_dev = generate_comments(fo_summary=fo_summary_text, use_case=value, user_stories=user_stories, role="dev")
+        user_stories_dict['comments_dev'] = comments_dev
+
+        # comments = evaluate_user_stories(fo_summary=fo_summary_text, use_case=value, user_stories_list=user_stories)
+        # user_stories_dict['comments'] = [].append(comments)
         write_json(user_stories_dict, results_path)
 
     return print(f"completed user stories and feedback, printed to {results_path}")

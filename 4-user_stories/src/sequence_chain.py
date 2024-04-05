@@ -60,9 +60,9 @@ def generate_user_stories(fo_summary:str, use_case:str, no_stories:int, user_sto
             }
         )['criteria']
         user_stories_list.append(user_story)
-    output = parse_output(fo_summary=fo_summary, use_case=use_case, user_stories_list=user_stories_list)
-    print(output)
-    return output
+    output_nl = translate_to_dutch(user_stories_list)
+
+    return parse_output(fo_summary=fo_summary, use_case=use_case, user_stories_list=output_nl)
 
 def evaluate_sequence():
     """initializes a simple sequence of llm chains"""

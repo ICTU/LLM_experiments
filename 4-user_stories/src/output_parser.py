@@ -8,10 +8,9 @@ from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain.chains import LLMChain
 
-from .llm import create_llm
-
 
 load_dotenv()
+
 
 class User_stories(TypedDict):
      
@@ -34,9 +33,8 @@ template = """
     You are also given a list of existing user stories (3) and a a user story format (4) to structure your answer.
          
     Instructions:
-    - using the provided context (1) form a new user story for the use case (2)
-    - avoid overlap with the existing user stories (3) (if the list is empty, provide the most basic user story)
-    - use the provided user story format (4)
+    - using the provided context (1 & 2) format the list of user stories (3) using the provided format (4)
+    - give your answers in dutch
          
     1. Functional design: ```{functional_design}```
         

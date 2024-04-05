@@ -2,22 +2,19 @@ from langchain_core.prompts import ChatPromptTemplate
 from src.llm import create_llm
 
 
-def translate_to_dutch(input:list) -> list:
+def translate_to_dutch(input):
     llm = create_llm()
-    output = []
-    for item in input:
-        prompt = translate_prompt(item)
-        output.append(llm.invoke(prompt).content)
-    return output
-        
+    prompt = translate_prompt(input)
+    print("Translating to dutch...")
+    return llm.invoke(prompt).content        
 
 
 translate_template = ChatPromptTemplate.from_messages(
     [
         ("system", "You are a helpful and precise translation assistant."),
-        ("user", """You are given a user story written in English. Please translate it to Dutch. 
+        ("user", """You are given a list of user stories written in English. Please translate it to Dutch. 
         
-        User story: ```{user_story}```
+        User stories: ```{user_story}```
         
         Translation:"""),
     ]
