@@ -46,7 +46,7 @@ def user_stories_main(fo_doc_path:Path, use_cases:dict, no_stories:int, results_
 
         comments_dev = generate_comments(fo_summary=fo_summary_text, use_case=value, user_stories=user_stories, role="dev")
         user_stories_dict['comments_dev'] = comments_dev
-        
+
         # comments = evaluate_user_stories(fo_summary=fo_summary_text, use_case=value, user_stories_list=user_stories)
         # user_stories_dict['comments'] = [].append(comments)
         write_json(user_stories_dict, results_path)
