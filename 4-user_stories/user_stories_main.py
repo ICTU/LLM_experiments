@@ -59,5 +59,5 @@ if __name__ == "__main__":
         #doc_path = Path(sys.argv[1]).resolve(strict=True)
         doc_path = "docs/Globaal-Functioneel-Ontwerp InkoopDB.docx"
         use_cases = use_cases_inkoop
-        results_path = "results.json"
+        results_path = "metrics/results.json"
         user_stories_main(fo_doc_path=doc_path, use_cases=use_cases_inkoop, no_stories=5, results_path=results_path)
