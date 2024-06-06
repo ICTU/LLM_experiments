@@ -21,5 +21,5 @@ def number_of_files(dir_path:Path) -> int:
 def max_num_tokens(path: Path, base_max_tokens) -> int:
     """Calculate the max numer of tokens usable in the output, takes base tokens and number of files as int input"""
     number_of_files_in_dir = number_of_files(path)
-    max_num_tokens = math.ceil(base_max_tokens + math.sqrt(number_of_files_in_dir * 25))
+    max_num_tokens = math.ceil(base_max_tokens + math.sqrt(number_of_files_in_dir * 30))
     return max_num_tokens
