@@ -3,14 +3,14 @@ from langchain_core.prompts import ChatPromptTemplate
 #regular chat prompt templates
 chat_code_summary_template = ChatPromptTemplate.from_messages(
     [
-        ("system", "You are a helpful code expert. Your task is analyzing, and consisely summarizing code files."),
+        ("system", "You are a helpful code expert. Your task is analyzing, and concisely summarizing code files."),
         ("user", "Provide a summary for the following code file, don't include generalities, focus on specifics, file name: {file_name}, code: {code}"),
     ]
 )
 
 chat_sum_summary_template = ChatPromptTemplate.from_messages(
     [
-        ("system", "You are a helpful code expert. Your task is analyzing, and consisely summarizing codebases."),
+        ("system", "You are a helpful code expert. Your task is analyzing, and concisely summarizing codebases."),
         ("""The following is a list of summaries describing part of a codebase. 
          
         Component name: {component}
@@ -25,13 +25,13 @@ chat_sum_summary_template = ChatPromptTemplate.from_messages(
 #one-shot templates include a single example for the model to follow
 one_shot_code_summary_template = ChatPromptTemplate.from_messages(
     [
-        ("system", "You are a helpful code expert. Your task is analyzing, and consisely summarizing code files."),
-        ( "user", """Provide a summary for the following code file, don't include generalities, focus on specifics.
+        ("system", "You are a helpful code expert. Your task is analyzing, and concisely summarizing code files."),
+        ( "user", """Provide a summary for the following code file, don't include generalities, focus on specifics. Keep your answer short and concise (max 100 words).
         file name: {example_name}
         code: ```{example_code}
 ```"""),
         ("ai", """{example_answer}"""),
-        ( "user", """Provide a summary for the following code file, don't include generalities, focus on specifics.
+        ( "user", """Provide a summary for the following code file, don't include generalities, focus on specifics. Keep your answer short and concise (max 100 words) and follow the the same structure as your previous answer,.
         file name: {file_name}
         code: ```{code}```"""),
     ]
@@ -39,13 +39,13 @@ one_shot_code_summary_template = ChatPromptTemplate.from_messages(
 
 one_shot_sum_summary_template = ChatPromptTemplate.from_messages(
     [
-        ("system", "You are a helpful code expert. Your task is analyzing, and consisely summarizing codebases."),
+        ("system", "You are a helpful code expert. Your task is analyzing, and concisely summarizing codebases."),
         ("user", """The following is a list of summaries describing part of a codebase. 
          
          Component name: {example_component}
          Summaries: {example_summaries}
          
-         Based on the list of summaries, distil a general description. Explain how it functions like you would to somebody with limited programming knowledge. 
+         Based on the list of summaries, distil a general description. Explain how it functions like you would to somebody with limited programming knowledge. Keep your answers factual and short, no yapping. 
          Helpful Answer:"""),
         ("ai", ".{example_answer}"), ###input correct summary here
         ("user","""The following is a list of summaries describing part of a codebase. 
@@ -53,7 +53,7 @@ one_shot_sum_summary_template = ChatPromptTemplate.from_messages(
          Component name: {component}
          Summaries: {summaries}
          
-         Based on the list of summaries, distil a general description. Explain how it functions like you would to somebody with limited programming knowledge. 
+         Based on the list of summaries, distil a general description. Explain how it functions like you would to somebody with limited programming knowledge. Keep your answers factual, short (max 120 words) and follow the the same structure as your previous answer, no yapping.
          Helpful Answer:"""),
     ]
 )

@@ -14,7 +14,7 @@ def skip_dir(path: Path) -> bool:
 
 def skip_file(filename: Path) -> bool:
     """Return whether to skip the file."""
-    filenames_to_skip = [".*", "__init__.py", "*.txt", "*.xml", "*.json", "*.png", "*.ico", "*.gif", "*.zip"]
+    filenames_to_skip = [".*", "__init__.py", "*.txt", "*.xml", "*.json", "*.png", "*.ico", "*.gif", "*.zip", "summarize_code.py", "...summary_cache.json", "*.pdf", "*.docx"]
     for filename_to_skip in filenames_to_skip:
         if filename.match(filename_to_skip):
             return True
