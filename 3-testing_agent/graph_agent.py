@@ -24,7 +24,6 @@ class State(TypedDict):
 
 class BasicToolNode:
     """A node that runs the tools requested in the last AIMessage."""
-
     def __init__(self, tools: list) -> None:
         self.tools_by_name = {tool.name: tool for tool in tools}
 
@@ -89,35 +88,32 @@ state: State,
 
 #build the graph
 def build_chatbot_graph():
+    memory = SqliteSaver.from_conn_string(":memory:")
+
     graph_builder = StateGraph(State)
     
     graph_builder.add_node("chatbot", chatbot)
 
-    tool_node = BasicToolNode(tools=create_tools())
+    tool_node = ToolNode(tools=create_tools())
     graph_builder.add_node("tools", tool_node)
 
     graph_builder.add_conditional_edges(
     "chatbot",
-    route_tools,
-    # The following dictionary lets you tell the graph to interpret the condition's outputs as a specific node
-    # It defaults to the identity function, but if you
-    # want to use a node named something else apart from "tools",
-    # You can update the value of the dictionary to something else
-    # e.g., "tools": "my_tools"
-    {"tools": "tools", "__end__": "__end__"},
+    tools_condition,
 )
     
     graph_builder.add_edge("tools", "chatbot")
     graph_builder.set_entry_point("chatbot")
     #graph_builder.set_finish_point("chatbot")
 
-    return graph_builder.compile()
+    return graph_builder.compile(checkpointer=memory)
+
 
 def create_graph_image(graph:CompiledStateGraph, image_path = 'graph_visual.png'):
+    """Creates a schematic image of the compiled graph"""
     image_data = graph.get_graph().draw_mermaid_png()
     with open(image_path, 'wb') as f:
         f.write(image_data)
-
 
 
 if __name__ == "__main__":
@@ -128,23 +124,13 @@ if __name__ == "__main__":
     create_graph_image(chatbot_graph)
 
 
-    while True:
-        user_input = input("User: ")
-        if user_input.lower() in ["quit", "exit", "q"]:
-            print("Goodbye!")
-            break
-        for event in chatbot_graph.stream({"messages": [("user", user_input)]}):
-            for value in event.values():
-                if isinstance(value["messages"][-1], BaseMessage):
-                    print("Assistant:", value["messages"][-1].content)
-
-    #for chatbot without tools
     # while True:
     #     user_input = input("User: ")
     #     if user_input.lower() in ["quit", "exit", "q"]:
     #         print("Goodbye!")
     #         break
-    #     for event in chatbot_graph.stream({"messages": ("user", user_input)}):
+    #     for event in chatbot_graph.stream({"messages": [("user", user_input)]}):
     #         for value in event.values():
-    #             print("Assistant:", value["messages"][-1].content)
+    #             if isinstance(value["messages"][-1], BaseMessage):
+    #                 print("Assistant:", value["messages"][-1].content)
     
