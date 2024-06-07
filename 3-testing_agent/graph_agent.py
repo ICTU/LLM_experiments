@@ -62,7 +62,10 @@ def build_chatbot_graph():
     graph_builder.add_edge("tools", "chatbot")
     graph_builder.set_entry_point("chatbot")
 
-    return graph_builder.compile(checkpointer=memory)
+    return graph_builder.compile(
+        checkpointer=memory,
+        interrupt_before=["tools"]
+        )
 
 
 def create_graph_image(graph:CompiledStateGraph, image_path = 'graph_visual.png'):
@@ -86,6 +89,17 @@ if __name__ == "__main__":
         if user_input.lower() in ["quit", "exit", "q"]:
             print("Goodbye!")
             break
+        #if user input is None, the graph will continue where it left off, without adding anything new to the state
+        if user_input.lower() == "none":
+            for event in chatbot_graph.stream(
+                None,
+                config,
+                stream_mode="values"
+            ):
+                for messages in event.values():
+                    if isinstance(messages[-1], BaseMessage):
+                        if isinstance(messages[-1], AIMessage):
+                            print("Assistant:", messages[-1].content)                
         for event in chatbot_graph.stream(
             {"messages": [("user", user_input)]},
             config,
@@ -95,4 +109,10 @@ if __name__ == "__main__":
                 if isinstance(messages[-1], BaseMessage):
                     if isinstance(messages[-1], AIMessage):
                         print("Assistant:", messages[-1].content)
+    
+    #use to check state of graph for thread id (config)
+    snapshot = chatbot_graph.get_state(config)
+    print(snapshot)
+    print(snapshot.next)
+
     
