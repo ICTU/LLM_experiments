@@ -114,5 +114,3 @@ if __name__ == "__main__":
     snapshot = chatbot_graph.get_state(config)
     print(snapshot)
     print(snapshot.next)
-
-    
