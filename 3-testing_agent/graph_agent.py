@@ -11,7 +11,7 @@ from langgraph.checkpoint.sqlite import SqliteSaver
 from langgraph.prebuilt import ToolNode, tools_condition
 
 from langchain_anthropic import ChatAnthropic
-from langchain_core.messages import ToolMessage, BaseMessage
+from langchain_core.messages import ToolMessage, BaseMessage, HumanMessage, AIMessage
 from langchain_community.tools.tavily_search import TavilySearchResults
 
 # load api keys
@@ -20,31 +20,6 @@ load_dotenv()
 class State(TypedDict):
     # Messages have the type "list". The `add_messages` function in the annotation defines how this state key should be updated
     messages: Annotated[list, add_messages]
-
-
-class BasicToolNode:
-    """A node that runs the tools requested in the last AIMessage."""
-    def __init__(self, tools: list) -> None:
-        self.tools_by_name = {tool.name: tool for tool in tools}
-
-    def __call__(self, inputs: dict):
-        if messages := inputs.get("messages", []):
-            message = messages[-1]
-        else:
-            raise ValueError("No message found in input")
-        outputs = []
-        for tool_call in message.tool_calls:
-            tool_result = self.tools_by_name[tool_call["name"]].invoke(
-                tool_call["args"]
-            )
-            outputs.append(
-                ToolMessage(
-                    content=json.dumps(tool_result),
-                    name=tool_call["name"],
-                    tool_call_id=tool_call["id"],
-                )
-            )
-        return {"messages": outputs}
 
 
 def create_tools():
@@ -68,24 +43,6 @@ def chatbot(state: State):
     return {"messages": [llm.invoke(state["messages"])]}
 
 
-def route_tools(
-state: State,
-) -> Literal["tools", "__end__"]:
-    """Use in the conditional_edge to route to the ToolNode if the last message
-
-    has tool calls. Otherwise, route to the end."""
-    # The `route_tools` function returns "tools" if the chatbot asks to use a tool, and "__end__" if
-    # it is fine directly responding. This conditional routing defines the main agent loop.
-    if isinstance(state, list):
-        ai_message = state[-1]
-    elif messages := state.get("messages", []):
-        ai_message = messages[-1]
-    else:
-        raise ValueError(f"No messages found in input state to tool_edge: {state}")
-    if hasattr(ai_message, "tool_calls") and len(ai_message.tool_calls) > 0:
-        return "tools"
-    return "__end__"
-
 #build the graph
 def build_chatbot_graph():
     memory = SqliteSaver.from_conn_string(":memory:")
@@ -104,9 +61,11 @@ def build_chatbot_graph():
     
     graph_builder.add_edge("tools", "chatbot")
     graph_builder.set_entry_point("chatbot")
-    #graph_builder.set_finish_point("chatbot")
 
-    return graph_builder.compile(checkpointer=memory)
+    return graph_builder.compile(
+        checkpointer=memory,
+        interrupt_before=["tools"]
+        )
 
 
 def create_graph_image(graph:CompiledStateGraph, image_path = 'graph_visual.png'):
@@ -123,14 +82,35 @@ if __name__ == "__main__":
     # create image of graph
     create_graph_image(chatbot_graph)
 
+    config = {"configurable": {"thread_id": "1"}}
 
-    # while True:
-    #     user_input = input("User: ")
-    #     if user_input.lower() in ["quit", "exit", "q"]:
-    #         print("Goodbye!")
-    #         break
-    #     for event in chatbot_graph.stream({"messages": [("user", user_input)]}):
-    #         for value in event.values():
-    #             if isinstance(value["messages"][-1], BaseMessage):
-    #                 print("Assistant:", value["messages"][-1].content)
+    while True:
+        user_input = input("User: ")
+        if user_input.lower() in ["quit", "exit", "q"]:
+            print("Goodbye!")
+            break
+        #if user input is None, the graph will continue where it left off, without adding anything new to the state
+        if user_input.lower() == "none":
+            for event in chatbot_graph.stream(
+                None,
+                config,
+                stream_mode="values"
+            ):
+                for messages in event.values():
+                    if isinstance(messages[-1], BaseMessage):
+                        if isinstance(messages[-1], AIMessage):
+                            print("Assistant:", messages[-1].content)                
+        for event in chatbot_graph.stream(
+            {"messages": [("user", user_input)]},
+            config,
+            stream_mode="values"
+        ):
+            for messages in event.values():
+                if isinstance(messages[-1], BaseMessage):
+                    if isinstance(messages[-1], AIMessage):
+                        print("Assistant:", messages[-1].content)
     
+    #use to check state of graph for thread id (config)
+    snapshot = chatbot_graph.get_state(config)
+    print(snapshot)
+    print(snapshot.next)
