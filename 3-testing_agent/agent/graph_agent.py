@@ -1,7 +1,7 @@
 import os
 import json
 from dotenv import load_dotenv
-from typing import Annotated, Literal, Union
+from typing import Annotated
 from typing_extensions import TypedDict 
 
 from langgraph.graph import StateGraph
