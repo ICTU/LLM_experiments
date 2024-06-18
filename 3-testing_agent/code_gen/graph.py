@@ -6,6 +6,7 @@ from typing import Dict, TypedDict, List
 from langgraph.graph import END, StateGraph
 from llm import code_gen_chain
 from load_docs import concatenated_content
+from langgraph.graph.state import CompiledStateGraph
 
 class GraphState(TypedDict):
     """
@@ -224,11 +225,21 @@ def create_graph():
     workflow.add_edge("reflect", "generate")
     return workflow.compile()
 
-app = create_graph()
-question = """I want to create a LLM agent using Langgraph.
-The purpose of this agent is to generate unit tests for a code unit and then run a test.
-Based on the outcome of the test, it should decide to revise the unit test code or finish the loop.
-Therefore the agent should have 2 tools, one for revising the unit test and one for running the unit test.
-Can you help me?"""
-app.invoke({"messages": [("user", question)], "iterations": 0})
-app.get_state()
+def create_graph_image(graph:CompiledStateGraph, image_path = 'graph_visual.png'):
+    """Creates a schematic image of the compiled graph"""
+    image_data = graph.get_graph().draw_mermaid_png()
+    with open(image_path, 'wb') as f:
+        f.write(image_data)
+
+
+if __name__ == "__main__":
+    app = create_graph()
+    create_graph_image(app)
+
+    # question = """I want to create a LLM agent using Langgraph.
+    # The purpose of this agent is to generate unit tests for a code unit and then run a test.
+    # Based on the outcome of the test, it should decide to revise the unit test code or finish the loop.
+    # Therefore the agent should have 2 tools, one for revising the unit test and one for running the unit test.
+    # Can you help me?"""
+    # app.invoke({"messages": [("user", question)], "iterations": 0})
+    # app.get_state()
