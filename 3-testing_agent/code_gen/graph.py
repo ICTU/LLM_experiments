@@ -1,3 +1,4 @@
+import sys
 from typing import Dict, TypedDict, List
 # from operator import itemgetter
 # from langchain_core.pydantic_v1 import BaseModel, Field
@@ -5,7 +6,7 @@ from typing import Dict, TypedDict, List
 # from langchain_core.prompts import PromptTemplate
 from langgraph.graph import END, StateGraph
 from llm import code_gen_chain
-from load_docs import concatenated_content
+from load_docs import concatenated_content, functionality, unit_test
 from langgraph.graph.state import CompiledStateGraph
 
 class GraphState(TypedDict):
@@ -24,13 +25,14 @@ class GraphState(TypedDict):
     generation: str
     iterations: int
 
-### Parameter
+
+    ### Parameter
 
 # Max tries
-max_iterations = 8
-# Reflect
-flag = 'reflect'
-# flag = "do not reflect"
+max_iterations = 5
+    # Reflect
+# flag = 'reflect'
+flag = "do not reflect"
 
 ### Nodes
 
@@ -64,7 +66,7 @@ def generate(state: GraphState):
 
     # Solution
     code_solution = code_gen_chain.invoke(
-        {"context": concatenated_content, "messages": messages}
+        {"codefiles": concatenated_content, "messages": messages}
     )
     messages += [
         (
@@ -105,8 +107,8 @@ def code_check(state: GraphState):
     try:
         exec(imports)
     except Exception as e:
-        print("---CODE IMPORT CHECK: FAILED---")
         error_message = [("user", f"Your solution failed the import test: {e}")]
+        print("---CODE IMPORT CHECK: FAILED---", error_message)
         messages += error_message
         return {
             "generation": code_solution,
@@ -116,8 +118,12 @@ def code_check(state: GraphState):
         }
 
     # Check execution
+    all_code = imports + "\n" + code
+    with open("test.py", "w") as fd:
+        fd.write(all_code)
     try:
-        exec(imports + "\n" + code)
+        import os
+        os.subprocess(["python", "test.py"])
     except Exception as e:
         print("---CODE BLOCK CHECK: FAILED---")
         error_message = [("user", f"Your solution failed the code execution test: {e}")]
@@ -169,7 +175,7 @@ def reflect(state: GraphState):
 
     # Add reflection
     reflections = code_gen_chain.invoke(
-        {"context": concatenated_content, "messages": messages}
+        {"codefiles": concatenated_content, "messages": messages}
     )
     messages += [("assistant", f"Here are reflections on the error: {reflections}")]
     return {"generation": code_solution, "messages": messages, "iterations": iterations}
@@ -233,13 +239,33 @@ def create_graph_image(graph:CompiledStateGraph, image_path = 'graph_visual.png'
 
 
 if __name__ == "__main__":
+
     app = create_graph()
     create_graph_image(app)
 
-    # question = """I want to create a LLM agent using Langgraph.
-    # The purpose of this agent is to generate unit tests for a code unit and then run a test.
-    # Based on the outcome of the test, it should decide to revise the unit test code or finish the loop.
-    # Therefore the agent should have 2 tools, one for revising the unit test and one for running the unit test.
-    # Can you help me?"""
-    # app.invoke({"messages": [("user", question)], "iterations": 0})
-    # app.get_state()
+    question =  f"""Please improve upon the given unit test to test the specified functionality in the codebase.
+
+    Carefully analyze the provided codefiles and identify the key components, functions, and classes that are directly related to implementing the specified functionality. 
+
+    Then, write a comprehensive set of unit tests in the same programming language as the codebase. Make sure your tests are thorough and cover as many potential issues as possible. The goal is to catch any bugs or unintended behavior related to the specified functionality.
+
+    Your tests should be focused specifically on:
+        
+    <functionality>
+    {functionality}
+    </functionality>
+
+    Do not worry about testing unrelated parts of the codebase.
+
+    Here is the existing unit test code that you should use as a starting point and extend upon. Your tests should be compatible with this existing codebase and should be written in the same programming language and testing framework.
+    
+    Return the existing test and your additional tests. Add 'unittest.main()' as the last line. Don't include if __name__  == '__main__': in your solution.
+    <unit_test>
+    {unit_test}
+    </unit_test>""" 
+
+    app.invoke({"messages": [("user", question)], "iterations": 0})
+    print(f"---FINAL SOLUTION--- {app.get_state['generation']}")
+
+
+

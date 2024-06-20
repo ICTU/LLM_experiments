@@ -2,7 +2,7 @@ import anthropic
 import os
 import sys
 from dotenv import load_dotenv
-from skip_dir import skip_dir, skip_file
+from code_gen.skip_dir import skip_dir, skip_file
 from pathlib import Path
 
 load_dotenv()
