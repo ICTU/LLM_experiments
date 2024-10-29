@@ -1,5 +1,5 @@
 docx2txt
-langchain == 0.1.20
+langchain == 0.3.0
 langchainhub
 langgraph == 0.0.51
 langchain-core == 0.2.4
